@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { checkMinimalBalance, checkNetwork } from '../utils/connect-extension';
+import Web3 from 'web3';
 
 function Dashboard() {
   console.log('Dashboard loaded');
@@ -15,12 +16,13 @@ function Dashboard() {
   }, []);
 
   async function test() {
+    const web3 = new Web3(window.ethereum);
     const ethereumtest = await window.ethereum.request({
       method: 'eth_requestAccounts',
     });
     console.log('address from ethereum rpc: ', ethereumtest);
-    //const accounts = await web3.eth.getAccounts(console.log);
-    //console.log("address from web3 provider: ", accounts);
+    const accounts = await web3.eth.getAccounts(console.log);
+    console.log('address from web3 provider: ', accounts);
     //console.log( "getCode: ", await web3.eth.getCode(ethereumtest[0]));
   }
 
