@@ -1,4 +1,14 @@
+import { checkMinimalBalance, checkNetwork } from '../utils/connect-extension';
+
 function Notifications() {
+    try {
+        let network = await checkNetwork();
+        if (network) {
+          await checkMinimalBalance();
+        }
+      } catch (error) {
+        console.log('could not update noticifactions:', error);
+      }
   return (
     <div>
       <p className="note" id="singular" style={{ display: 'block' }}>
