@@ -1,11 +1,12 @@
 import { Footer } from '../components';
+import { useEffect } from 'react';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 export default function Home({ UpAddress }) {
   // On mount
   useEffect(() => {
     console.log('App useEffect loaded');
-    checkForExtension();
+    //checkForExtension();
   }, []);
 
   return (

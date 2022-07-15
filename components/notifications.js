@@ -1,14 +1,18 @@
 import { checkMinimalBalance, checkNetwork } from '../utils/connect-extension';
 
 function Notifications() {
-    try {
-        let network = await checkNetwork();
-        if (network) {
-          await checkMinimalBalance();
-        }
-      } catch (error) {
-        console.log('could not update noticifactions:', error);
-      }
+  try {
+    addNetworkCheck();
+  } catch (error) {
+    console.log('could not update noticifactions:', error);
+  }
+
+  async function notificationCheckUps() {
+    const network = await checkNetwork();
+    if (network) {
+      await checkMinimalBalance();
+    }
+  }
   return (
     <div>
       <p className="note" id="singular" style={{ display: 'block' }}>
