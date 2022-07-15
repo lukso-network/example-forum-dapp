@@ -2,6 +2,12 @@ import { Footer } from '../components';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 export default function Home({ UpAddress }) {
+  // On mount
+  useEffect(() => {
+    console.log('App useEffect loaded');
+    checkForExtension();
+  }, []);
+
   return (
     <div className="App">
       <Head>
@@ -25,4 +31,22 @@ export async function getStaticProps() {
       UpAddress: '',
     },
   };
+}
+
+async function checkForExtension() {
+  try {
+    const accounts = await window.ethereum.request({
+      method: 'eth_accounts',
+    });
+
+    // If no account was found
+    if (!accounts.length) {
+      console.log('user is not logged in');
+      navigate('/login');
+    } else {
+      navigate('/dashboard');
+    }
+  } catch (error) {
+    console.log(error);
+  }
 }
