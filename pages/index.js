@@ -13,6 +13,24 @@ export default function Home({ UpAddress }) {
     checkForExtension();
   }, []);
 
+  async function checkForExtension() {
+    try {
+      const accounts = await window.ethereum.request({
+        method: 'eth_accounts',
+      });
+
+      // If no account was found
+      if (!accounts.length) {
+        console.log('user is not logged in');
+        router.push('/login');
+      } else {
+        router.push('/dashboard');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div className="App">
       <Head>
@@ -36,22 +54,4 @@ export async function getStaticProps() {
       UpAddress: '',
     },
   };
-}
-
-async function checkForExtension() {
-  try {
-    const accounts = await window.ethereum.request({
-      method: 'eth_accounts',
-    });
-
-    // If no account was found
-    if (!accounts.length) {
-      console.log('user is not logged in');
-      router.push('/login');
-    } else {
-      router.push('/dashboard');
-    }
-  } catch (error) {
-    console.log(error);
-  }
 }
