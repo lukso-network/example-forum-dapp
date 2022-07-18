@@ -5,11 +5,31 @@ import styles from '../styles/Home.module.css';
 import { useRouter } from 'next/router';
 
 export default function Home({ UpAddress }) {
+  const router = useRouter();
+
   // On mount
   useEffect(() => {
     console.log('App useEffect loaded');
-    //checkForExtension();
+    checkForExtension();
   }, []);
+
+  async function checkForExtension() {
+    try {
+      const accounts = await window.ethereum.request({
+        method: 'eth_accounts',
+      });
+
+      // If no account was found
+      if (!accounts.length) {
+        console.log('user is not logged in');
+        router.push('/login');
+      } else {
+        router.push('/dashboard');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <div className="App">
@@ -34,23 +54,4 @@ export async function getStaticProps() {
       UpAddress: '',
     },
   };
-}
-
-async function checkForExtension() {
-  try {
-    const accounts = await window.ethereum.request({
-      method: 'eth_accounts',
-    });
-    const router = useRouter();
-
-    // If no account was found
-    if (!accounts.length) {
-      console.log('user is not logged in');
-      router.push('/login');
-    } else {
-      router.push('dashboard');
-    }
-  } catch (error) {
-    console.log(error);
-  }
 }
