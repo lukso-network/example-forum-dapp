@@ -2,6 +2,8 @@ import { Footer } from '../components';
 import { useEffect } from 'react';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
+import { useRouter } from 'next/router';
+
 export default function Home({ UpAddress }) {
   // On mount
   useEffect(() => {
@@ -39,13 +41,14 @@ async function checkForExtension() {
     const accounts = await window.ethereum.request({
       method: 'eth_accounts',
     });
+    const router = useRouter();
 
     // If no account was found
     if (!accounts.length) {
       console.log('user is not logged in');
-      navigate('/login');
+      router.push('/login');
     } else {
-      navigate('/dashboard');
+      router.push('dashboard');
     }
   } catch (error) {
     console.log(error);

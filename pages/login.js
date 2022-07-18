@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { checkNetwork, connectWeb3 } from '../utils/connect-extension';
 
 function Login() {
   // On mount
-  let navigate = useNavigate();
   console.log('Login loaded');
   useEffect(() => {
     console.log('login useEffect loaded');
@@ -14,7 +12,7 @@ function Login() {
   async function login() {
     //connectExtension();
     if ((await connectWeb3()) && (await checkNetwork())) {
-      navigate('/dashboard');
+      router.push('/dashboard');
     }
   }
 
@@ -28,7 +26,7 @@ function Login() {
     // check if any number of accounts was returned
     // IF go to the dashboard
     if (accounts.length) {
-      navigate('/dashboard');
+      router.push('/dashboard');
       console.log('navigate refreshed from Login jsx');
     } else console.log();
   }
