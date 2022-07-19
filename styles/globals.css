@@ -19,7 +19,7 @@
 
 .note,
 .warning {
-    display: none;
+    display: block;
     background-color: white;
     border: solid 1px white;
     border-radius: 6px;
@@ -27,8 +27,7 @@
     overflow: hidden;
     padding: 15px 20px;
     margin-bottom: 10px;
-    max-width: 1100px;
-    margin: auto;
+    max-width: 840px;
 }
 
 .note::before,
@@ -53,4 +52,12 @@
 
 .warning::before {
     content: "⚠️";
+}
+
+.dashboardButton {
+    width: 170px;
+}
+
+.centered {
+    text-align: center;
 }

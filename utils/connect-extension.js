@@ -26,8 +26,8 @@ export async function connectWeb3() {
     // Provider not set or invalid
     else {
       // Show install extension notification
-      document.getElementById('#install').style.display = 'block';
-      document.getElementById('#singular').style.display = 'none';
+      document.getElementById('install').style.display = 'block';
+      document.getElementById('singular').style.display = 'none';
       return false;
     }
   }
@@ -35,8 +35,8 @@ export async function connectWeb3() {
   // Browser is not supported
   else {
     // Show unsupported browser notification
-    document.getElementById('#browser').style.display = 'block';
-    document.getElementById('#singular').style.display = 'none';
+    document.getElementById('browser').style.display = 'block';
+    document.getElementById('singular').style.display = 'none';
     return false;
   }
 }
@@ -55,9 +55,9 @@ export async function checkMinimalBalance() {
     // Show low balance browser notification
     let chainID = await web3.eth.getChainId();
     if (chainID === 22) {
-      document.getElementById('#lowBalanceL14').style.display = 'block';
+      document.getElementById('lowBalanceL14').style.display = 'block';
     } else if (chainID === 2828) {
-      document.getElementById('#lowBalanceL16').style.display = 'block';
+      document.getElementById('lowBalanceL16').style.display = 'block';
     }
   }
 }
@@ -76,15 +76,14 @@ export async function checkNetwork() {
     // If address is EOA, likely a 3rd party extension is used
     if (bytecode === '0x') {
       // Show 3rd party extension notification
-      document.getElementById('#extension').style.display = 'block';
+      document.getElementById('extension').style.display = 'block';
 
       // Get its network ID
       const networkID = await web3.eth.net.getId();
-      console.log('NetworkID: ', networkID);
       // Check if its connected to the wrong network
-      if (networkID !== 22 || networkID !== 2828) {
+      if (networkID !== 22 && networkID !== 2828) {
         // Show wrong network notification
-        document.getElementById('#network').style.display = 'block';
+        document.getElementById('network').style.display = 'block';
         return false;
       }
 

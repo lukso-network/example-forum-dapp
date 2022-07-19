@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { checkNetwork, connectWeb3 } from '../utils/connect-extension';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { Notifications } from '../components';
 
 function Login() {
   const router = useRouter();
@@ -31,8 +32,9 @@ function Login() {
         // IF go to the dashboard
         if (accounts.length) {
           router.push('/dashboard');
-          console.log('navigate refreshed from Login jsx');
-        } else console.log('User denied access');
+        } else {
+          console.log('User denied access');
+        }
       });
   }
 
@@ -47,7 +49,9 @@ function Login() {
         <meta charset="UTF-8"></meta>
       </Head>
       <h2>Example Forum dApp</h2>
-      <h3>create, comment, and vote on posts and their comments.</h3>
+      <h3 className="centered">
+        create, comment, and vote on blogposts and their comments.
+      </h3>
 
       <br />
 
