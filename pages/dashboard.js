@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { checkMinimalBalance, checkNetwork } from '../utils/connect-extension';
 import Web3 from 'web3';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { Notifications } from '../components';
 
 function Dashboard({ href }) {
   const router = useRouter();
@@ -34,10 +34,17 @@ function Dashboard({ href }) {
         ></link>
         <meta charset="UTF-8"></meta>
       </Head>
-      <button className="nav-link" onClick={() => router.push('/create')}>
+      <Notifications></Notifications>
+      <button
+        className="nav-link dashboardButton"
+        onClick={() => router.push('/create')}
+      >
         Create Posts
       </button>
-      <button className="nav-link" onClick={() => router.push('/browse')}>
+      <button
+        className="nav-link dashboardButton"
+        onClick={() => router.push('/browse')}
+      >
         Browse Posts
       </button>
     </div>
