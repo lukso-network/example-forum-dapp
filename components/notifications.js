@@ -1,4 +1,8 @@
-import { checkMinimalBalance, checkNetwork } from '../utils/connect-extension';
+import {
+  checkMinimalBalance,
+  checkNetwork,
+  connectWeb3,
+} from '../utils/connect-extension';
 import { addLuksoL14Testnet, addLuksoL16Testnet } from '../utils/add-networks';
 
 function Notifications() {
@@ -10,6 +14,7 @@ function Notifications() {
   }
 
   async function notificationCheckUps() {
+    await connectWeb3();
     const network = await checkNetwork();
     if (network) {
       await checkMinimalBalance();

@@ -19,7 +19,7 @@
 
 .note,
 .warning {
-    display: block;
+    display: none;
     background-color: white;
     border: solid 1px white;
     border-radius: 6px;

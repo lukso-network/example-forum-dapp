@@ -69,34 +69,35 @@ export async function checkNetwork() {
 
     // Get account
     let account = await web3.eth.getAccounts();
-
     // Get the bytecode of the address or smart contract
-    let bytecode = await web3.eth.getCode(account[0]);
+    if (account.length) {
+      let bytecode = await web3.eth.getCode(account[0]);
 
-    // If address is EOA, likely a 3rd party extension is used
-    if (bytecode === '0x') {
-      // Show 3rd party extension notification
-      document.getElementById('extension').style.display = 'block';
+      // If address is EOA, likely a 3rd party extension is used
+      if (bytecode === '0x') {
+        // Show 3rd party extension notification
+        document.getElementById('extension').style.display = 'block';
 
-      // Get its network ID
-      const networkID = await web3.eth.net.getId();
-      // Check if its connected to the wrong network
-      if (networkID !== 22 && networkID !== 2828) {
-        // Show wrong network notification
-        document.getElementById('network').style.display = 'block';
-        return false;
+        // Get its network ID
+        const networkID = await web3.eth.net.getId();
+        // Check if its connected to the wrong network
+        if (networkID !== 22 && networkID !== 2828) {
+          // Show wrong network notification
+          document.getElementById('network').style.display = 'block';
+          return false;
+        }
+
+        /**
+         * 3rd party extension is connected to the right network.
+         * Check if balance on network is enough to send transactions
+         */
+        await checkMinimalBalance();
+        return true;
       }
 
-      /**
-       * 3rd party extension is connected to the right network.
-       * Check if balance on network is enough to send transactions
-       */
-      await checkMinimalBalance();
+      // Likely installed the UP extension
       return true;
     }
-
-    // Likely installed the UP extension
-    return true;
   } catch (error) {
     console.log('checkNetwork failed:', error);
     /**

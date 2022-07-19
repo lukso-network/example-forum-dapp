@@ -14,7 +14,6 @@ function Login() {
   });
 
   async function login() {
-    //connectExtension();
     if ((await connectWeb3()) && (await checkNetwork())) {
       router.push('/dashboard');
     }
@@ -48,6 +47,7 @@ function Login() {
         ></link>
         <meta charset="UTF-8"></meta>
       </Head>
+      <Notifications></Notifications>
       <h2>Example Forum dApp</h2>
       <h3 className="centered">
         create, comment, and vote on blogposts and their comments.
