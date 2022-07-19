@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
-import Link from 'next/link';
 import { checkMinimalBalance, checkNetwork } from '../utils/connect-extension';
 import Web3 from 'web3';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
 
-function Dashboard() {
+function Dashboard({ href }) {
+  const router = useRouter();
   console.log('Dashboard loaded');
 
   // On mount
@@ -24,12 +26,20 @@ function Dashboard() {
 
   return (
     <div className="App">
-      <Link className="nav-link" href="/create">
+      <Head>
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.2.3/milligram.min.css"
+        ></link>
+        <meta charset="UTF-8"></meta>
+      </Head>
+      <button className="nav-link" onClick={() => router.push('/create')}>
         Create Posts
-      </Link>
-      <Link className="nav-link" href="/browse">
+      </button>
+      <button className="nav-link" onClick={() => router.push('/browse')}>
         Browse Posts
-      </Link>
+      </button>
     </div>
   );
 }
