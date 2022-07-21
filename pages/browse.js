@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-
+import { Footer, Notifications } from '../components';
+import Head from 'next/head';
+import Link from 'next/link';
 function BrowsePost() {
   const router = useRouter();
 
@@ -22,8 +24,12 @@ function BrowsePost() {
         ></link>
         <meta charset="UTF-8"></meta>
       </Head>
-      <Notifications></Notifications>
+      <Link href={'/dashboard'}>
+        <a className="back">&lt;</a>
+      </Link>
+      <Notifications />
       <div>Browse Page</div>
+      <Footer />
     </div>
   );
 }

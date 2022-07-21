@@ -3,6 +3,7 @@ import Web3 from 'web3';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { Footer, Notifications } from '../components';
+import Link from 'next/link';
 
 function Dashboard({ href }) {
   const router = useRouter();
@@ -34,7 +35,7 @@ function Dashboard({ href }) {
         ></link>
         <meta charset="UTF-8"></meta>
       </Head>
-      <Notifications></Notifications>
+      <Notifications />
       <button
         className="nav-link dashboardButton"
         onClick={() => router.push('/create')}
