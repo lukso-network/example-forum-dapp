@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Web3 from 'web3';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { Notifications } from '../components';
+import { Footer, Notifications } from '../components';
 
 function Dashboard({ href }) {
   const router = useRouter();
@@ -47,6 +47,7 @@ function Dashboard({ href }) {
       >
         Browse Posts
       </button>
+      <Footer />
     </div>
   );
 }

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { checkNetwork, connectWeb3 } from '../utils/connect-extension';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { Notifications } from '../components';
+import { Notifications, Footer } from '../components';
 
 function Login() {
   const router = useRouter();
@@ -56,6 +56,7 @@ function Login() {
       <br />
 
       <button onClick={loginExtension}>Log in to your browser extension</button>
+      <Footer />
     </div>
   );
 }
