@@ -3,7 +3,6 @@ import Web3 from 'web3';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { Footer, Notifications } from '../components';
-import Link from 'next/link';
 
 function Dashboard({ href }) {
   const router = useRouter();
@@ -18,11 +17,13 @@ function Dashboard({ href }) {
 
   async function test() {
     const web3 = new Web3(window.ethereum);
-    const ethereumtest = await window.ethereum.request({
-      method: 'eth_requestAccounts',
+    const accounts = await window.ethereum.request({
+      method: 'eth_accounts',
     });
-    console.log('address from ethereum rpc: ', ethereumtest);
-    console.log('getCode: ', await web3.eth.getCode(ethereumtest[0]));
+    if (accounts.length) {
+      console.log('address from ethereum rpc: ', accounts);
+      console.log('getCode: ', await web3.eth.getCode(accounts[0]));
+    }
   }
 
   return (

@@ -4,8 +4,10 @@ import {
   connectWeb3,
 } from '../utils/connect-extension';
 import { addLuksoL14Testnet, addLuksoL16Testnet } from '../utils/add-networks';
+import { Router, useRouter } from 'next/router';
 
 function Notifications() {
+  const router = useRouter();
   try {
     notificationCheckUps();
     console.log('notificationCheckUp complete');
@@ -14,11 +16,11 @@ function Notifications() {
   }
 
   async function notificationCheckUps() {
-    await connectWeb3();
-    const network = await checkNetwork();
-    if (network) {
-      await checkMinimalBalance();
+    const isConnected = await connectWeb3();
+    if (!isConnected && router.pathname !== '/login') {
+      router.push('/login');
     }
+    await checkNetwork();
   }
 
   return (

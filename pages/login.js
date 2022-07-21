@@ -11,7 +11,7 @@ function Login() {
   useEffect(() => {
     console.log('login useEffect loaded');
     login();
-  });
+  }, []);
 
   async function login() {
     if ((await connectWeb3()) && (await checkNetwork())) {
