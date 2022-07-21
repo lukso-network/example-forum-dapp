@@ -22,7 +22,7 @@ function Notifications() {
   }
 
   return (
-    <div>
+    <div className="notificationContainer">
       <p className="note" id="singular" style={{ display: 'block' }}>
         If you have MetaMask AND Universal Profile Browser Extension installed,
         please disable one of them! See these guides for{' '}
@@ -55,7 +55,7 @@ function Notifications() {
         >
           Universal Profile Browser Extension
         </a>
-        <>.</>
+        <> to show author information.</>
       </p>
       <p className="warning" id="lowBalanceL14">
         <>Low account balance. Get funds from </>
