@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { Footer, Notifications } from '../components';
@@ -6,6 +6,19 @@ import Link from 'next/link';
 
 function CreatePost() {
   const router = useRouter();
+
+  const [blogpost, setBlockpostValues] = useState({
+    title: '',
+    text: '',
+    authorAddress: '',
+    date: '',
+  });
+
+  const changeHandler = (e) => {
+    setBlockpostValues((prevValues) => {
+      return { ...prevValues, [e.target.name]: e.target.value };
+    });
+  };
 
   console.log('CreatePost loaded');
   // On mount
@@ -44,6 +57,10 @@ function CreatePost() {
           className="titleField"
           placeholder="What are you writing about?"
           id="posttitle"
+          type="text"
+          value={blogpost.title}
+          name="title"
+          onChange={changeHandler}
         ></input>
         <br />
         <label>Text</label>
@@ -51,6 +68,10 @@ function CreatePost() {
           id="posttext"
           placeholder="Start writing a blogpost..."
           className="textField"
+          type="text"
+          value={blogpost.text}
+          name="title"
+          onChange={changeHandler}
         ></textarea>
         <button>submit</button>
       </div>

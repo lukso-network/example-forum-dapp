@@ -26,8 +26,8 @@ function Notifications() {
   return (
     <div className="notificationContainer">
       <p className="note" id="singular" style={{ display: 'block' }}>
-        If you have MetaMask AND Universal Profile Browser Extension installed,
-        please disable one of them! See these guides for{' '}
+        If you have MetaMask AND UP Extension installed, please disable one of
+        them! See these guides for{' '}
         <a
           rel="noreferrer"
           href="https://support.google.com/chrome_webstore/answer/2664769?hl=en"
