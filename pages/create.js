@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Footer, Notifications } from '../components';
 import Link from 'next/link';
+import Profile from '../components/profile';
 
 function CreatePost() {
   const router = useRouter();
@@ -34,15 +35,7 @@ function CreatePost() {
       <div className="appContainer">
         {' '}
         <h1>Create a post linked to the blockchain</h1>
-        <div className="center profile">
-          <div className="profileImage">
-            <div className="identicon"></div>
-            <div className="image"></div>
-          </div>
-          <span className="username"> {'username'} </span>
-          <p className="addressField">{'address'}</p>
-          <p className="description">{'description'}</p>
-        </div>
+        <Profile />
         <label>Title</label>
         <input
           className="titleField"
@@ -61,7 +54,7 @@ function CreatePost() {
           className="textField"
           type="text"
           value={blogpost.text}
-          name="title"
+          name="text"
           onChange={changeHandler}
         ></textarea>
         <button>submit</button>
