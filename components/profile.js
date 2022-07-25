@@ -4,12 +4,25 @@ import { Footer, Notifications } from '../components';
 import Link from 'next/link';
 import identicon from 'ethereum-blockies-base64';
 import Web3 from 'web3';
+import ERC725js from '@erc725/erc725.js';
+import LSP3UniversalProfileMetaDataSchema from '@erc725/erc725.js/schemas/LSP3UniversalProfileMetadata.json';
+import { IPFS_GATEWAY_BASE_URL } from '../constants';
+import _ from 'underscore';
 
 export default function Profile() {
-  const [profileAddress, setProfileAddress] = useState(null);
+  const [profileInfo, setProfileInfo] = useState({
+    address: '',
+    name: '',
+    description: '',
+    picURL: '',
+    identiconURL: '',
+    isEOA: false,
+  });
 
-  const handleProfile = (address) => {
-    setProfileAddress(address);
+  const handleProfileInfo = (name, value) => {
+    setProfileInfo((prevValues) => {
+      return { ...prevValues, [name]: value };
+    });
   };
 
   // On mount
@@ -20,65 +33,82 @@ export default function Profile() {
   async function loadProfileInformation() {
     const web3 = new Web3(window.ethereum);
 
-    // GET the UNIVERSAL PROFILE DATA
+    // GET the accounts from the universal profile extension
     const accounts = await web3.eth.getAccounts();
 
-    // TODO: make sure accounts is not empty!
     const account = accounts[0]; // set the first address as the Universal Profile address
-    handleProfile(account);
-    console.log('address', profileAddress);
+
     // set the address, wether Universal Profile or EOA (MetaMask)
+    handleProfileInfo('address', account);
 
     // generate identicon
     const identiconPicture = identicon(account); // generates a "data:image/png;base64,..."
-    const prepImage = 'url(' + identiconPicture + ')';
-    document.getElementById('identicon').style.backgroundImage = prepImage;
-    /*
-        // INSTANTIATE erc725.js
-        // window.web3 was set in App.vue
-        const profile = new ERC725js(LSP3UniversalProfileMetaDataSchema, account, window.web3.currentProvider, {
-        ipfsGateway: IPFS_GATEWAY_BASE_URL, // todo the gateway should be without /ipfs/
-        });
-        
-        let metaData;
-        try {
-        metaData = await profile.fetchData('LSP3Profile');
-        } catch (e) {
-        // IF it fails its likely NO Universal Profile, or a simple EOA (MetaMask)
 
-        this.profileData.name = false;
-        return;
-        }
+    handleProfileInfo('identiconURL', identiconPicture);
 
-        this.profileData = {
-        // merge profileData with fetched profile data
-        ...this.profileData,
-        ...metaData.value.LSP3Profile,
-        };
+    const profile = new ERC725js(
+      LSP3UniversalProfileMetaDataSchema,
+      account,
+      web3.currentProvider,
+      {
+        ipfsGateway: IPFS_GATEWAY_BASE_URL,
+      }
+    );
 
-        // GET the right image size for the profile image from the profile images array
-        this.profileData.profileImage = _.find(this.profileData.profileImage, (image) => {
+    let metaData;
+    try {
+      metaData = await profile.fetchData('LSP3Profile');
+    } catch (error) {
+      // IF it fails its likely NO Universal Profile, or a simple EOA (MetaMask)
+      console.log('extension is EOA');
+      handleProfileInfo('isEOA', true);
+      return;
+    }
+
+    handleProfileInfo('name', metaData.value.LSP3Profile.name);
+    handleProfileInfo('description', metaData.value.LSP3Profile.description);
+
+    // GET the right image size for the profile image from the profile images array
+    let profilePicture = _.find(
+      metaData.value.LSP3Profile.profileImage,
+      (image) => {
         if (image.width >= 200 && image.width <= 500) return image;
-        });
+      }
+    );
 
-        // If there is no image of the preferred size, take the default one
-        if (!this.profileData.profileImage && metaData.value.LSP3Profile.profileImage) {
-        this.profileData.profileImage = metaData.value.LSP3Profile.profileImage[0];
-        // change the IPFS path to a provider of our choice
-        }
-        this.profileData.profileImage.url = this.profileData.profileImage.url.replace('ipfs://', profile.options.ipfsGateway);
-        */
+    // If there is no image of the preferred size, take the default one
+    if (!profilePicture && metaData.value.LSP3Profile.profileImage) {
+      profilePicture = metaData.value.LSP3Profile.profileImage[0];
+    }
+
+    profilePicture.url = profilePicture.url.replace(
+      'ipfs://',
+      IPFS_GATEWAY_BASE_URL
+    );
+    handleProfileInfo('picURL', profilePicture.url);
   }
 
   return (
     <div className="center profile">
       <div className="profileImage">
-        <div className="identicon" id="identicon"></div>
-        <div className="image"></div>
+        <div
+          className="identicon"
+          style={{
+            backgroundImage: 'url(' + profileInfo.identiconURL + ')',
+          }}
+          id="identicon"
+        ></div>
+        <div
+          className="image"
+          id="image"
+          style={{
+            backgroundImage: 'url(' + profileInfo.picURL + ')',
+          }}
+        ></div>
       </div>
-      <span className="username"> {'username'} </span>
-      <p className="addressField">{profileAddress}</p>
-      <p className="description">{'description'}</p>
+      <span className="username"> {profileInfo.name} </span>
+      <p className="addressField">{profileInfo.address}</p>
+      <p className="description">{profileInfo.description}</p>
     </div>
   );
 }

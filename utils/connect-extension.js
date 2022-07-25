@@ -2,9 +2,6 @@ import Web3 from 'web3';
 
 export async function connectWeb3() {
   // Check if Browser is Chrome or Firefox
-  if (navigator.share) {
-    setNativeShare(true);
-  }
   if (
     navigator.userAgent.indexOf('Firefox') !== -1 ||
     navigator.userAgent.indexOf('Chrome') !== -1
