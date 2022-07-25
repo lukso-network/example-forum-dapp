@@ -1,4 +1,5 @@
 import Web3 from 'web3';
+import { CHAIN_IDS } from '../constants';
 
 export async function connectWeb3() {
   // Check if Browser is Chrome or Firefox
@@ -105,5 +106,18 @@ export async function checkNetwork() {
      *  connectWeb3() needs to be run before
      */
     return false;
+  }
+}
+
+export async function isLuksoNetwork() {
+  try {
+    const web3 = new Web3(window.ethereum);
+    let chainId = await web3.eth.getChainId();
+    if (chainId == CHAIN_IDS.L14 || chainId == CHAIN_IDS.L16) {
+      return true;
+    }
+    return false;
+  } catch (err) {
+    console.error(err);
   }
 }
