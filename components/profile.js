@@ -31,6 +31,8 @@ export default function Profile() {
 
     // generate identicon
     const identiconPicture = identicon(account); // generates a "data:image/png;base64,..."
+    const prepImage = 'url(' + identiconPicture + ')';
+    document.getElementById('identicon').style.backgroundImage = prepImage;
     /*
         // INSTANTIATE erc725.js
         // window.web3 was set in App.vue
@@ -71,7 +73,7 @@ export default function Profile() {
   return (
     <div className="center profile">
       <div className="profileImage">
-        <div className="identicon"></div>
+        <div className="identicon" id="identicon"></div>
         <div className="image"></div>
       </div>
       <span className="username"> {'username'} </span>
