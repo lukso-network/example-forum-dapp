@@ -5,15 +5,19 @@ import {
 } from '../utils/connect-extension';
 import { addLuksoL14Testnet, addLuksoL16Testnet } from '../utils/add-networks';
 import { Router, useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 function Notifications() {
   const router = useRouter();
-  try {
-    notificationCheckUps();
-    console.log('notificationCheckUp complete');
-  } catch (error) {
-    console.log('could not update noticifactions:', error);
-  }
+
+  useEffect(() => {
+    try {
+      notificationCheckUps();
+      console.log('notificationCheckUp complete');
+    } catch (error) {
+      console.log('could not update noticifactions:', error);
+    }
+  });
 
   async function notificationCheckUps() {
     const isConnected = await connectWeb3();
