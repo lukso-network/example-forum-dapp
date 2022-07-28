@@ -22,10 +22,13 @@ function Login() {
   // IF the user clicks the LOGIN BUTTON
   async function loginExtension() {
     // Request an account
+
+    // request access to the extension
     await window.ethereum
       .request({
         method: 'eth_requestAccounts',
       })
+
       .then(function (accounts) {
         // check if any number of accounts was returned
         // IF go to the dashboard

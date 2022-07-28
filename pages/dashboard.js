@@ -17,9 +17,12 @@ function Dashboard({ href }) {
 
   async function test() {
     const web3 = new Web3(window.ethereum);
+
+    // get back the connected account
     const accounts = await window.ethereum.request({
       method: 'eth_accounts',
     });
+
     if (accounts.length) {
       console.log('address from ethereum rpc: ', accounts);
       console.log('getCode: ', await web3.eth.getCode(accounts[0]));

@@ -31,12 +31,14 @@ export default function Profile() {
   }, []);
 
   async function loadProfileInformation() {
+    // instanciate Web3
     const web3 = new Web3(window.ethereum);
 
-    // GET the accounts from the universal profile extension
+    // get the accounts from the universal profile extension
     const accounts = await web3.eth.getAccounts();
 
-    const account = accounts[0]; // set the first address as the Universal Profile address
+    // set the first address as the Universal Profile address
+    const account = accounts[0];
 
     // set the address, wether Universal Profile or EOA (MetaMask)
     handleProfileInfo('address', account);
