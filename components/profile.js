@@ -76,17 +76,19 @@ export default function Profile() {
       }
     );
 
+    if(!profilePicture) {
     // If there is no image of the preferred size, take the default one
-    if (!profilePicture && metaData.value.LSP3Profile.profileImage) {
-      profilePicture = metaData.value.LSP3Profile.profileImage[0];
-    }
-
+      if ( metaData.value.LSP3Profile.profileImage) {
+        profilePicture = metaData.value.LSP3Profile.profileImage[0];
+      }
+   } else {
     profilePicture.url = profilePicture.url.replace(
       'ipfs://',
       IPFS_GATEWAY_BASE_URL
     );
     handleProfileInfo('picURL', profilePicture.url);
-  }
+    }
+   }
 
   return (
     <div className="center profile">

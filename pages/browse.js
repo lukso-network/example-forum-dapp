@@ -1,18 +1,39 @@
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { Footer, Notifications } from '../components';
-import Head from 'next/head';
 import Link from 'next/link';
+import {useContext, useEffect} from 'react'
+import { GlobalContext } from '../contexts/GlobalContext';
+import Post from '../components/browser/Post';
+
+
 function BrowsePost() {
-  const router = useRouter();
 
-  console.log('BrowsePost loaded');
-  // On mount
+
+  const {posts} = useContext(GlobalContext);
+
+
+  const renderPosts = () => {
+    return (
+      <>
+      {
+        posts.map((post, index) => (
+          <div key={index}>
+            <Post
+              title={post.title}
+              text={post.text}
+              comments={post.comments}
+              likes={post.likes}
+              postId={post.id}
+            />
+          </div>
+        ))
+      }
+      </>
+    )
+  }
+
   useEffect(() => {
-    console.log('BrowsePost useEffect loaded');
-
-    //updateNotifications();
-  }, []);
+    console.log(posts,'posts')
+  }, [posts])
 
   return (
     <div className="App">
@@ -20,7 +41,8 @@ function BrowsePost() {
         <a className="back">&lt;</a>
       </Link>
       <Notifications />
-      <div>Browse Page</div>
+      <h1>Browse Page</h1>
+      {posts.length ? renderPosts() : null}
       <Footer />
     </div>
   );

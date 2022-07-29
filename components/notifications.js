@@ -17,7 +17,7 @@ function Notifications() {
     } catch (error) {
       console.log('could not update noticifactions:', error);
     }
-  });
+  }, []);
 
   async function notificationCheckUps() {
     const isConnected = await connectWeb3();
