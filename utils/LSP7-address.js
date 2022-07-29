@@ -2,7 +2,7 @@
 const LSP7InfoObj = (url) => {
   //return ganache address if in development
   if (url.includes('localhost')) {
-     return '0x8294cAc95d55350C6B417e0085AF20dCEf5B32ba'
+     return '0x6B385CBd303100C1575f82c514fB3E7353544d3d'
   }
   return //l16 address
 }

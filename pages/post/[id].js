@@ -8,7 +8,7 @@ import { Footer, Notifications } from '../../components';
 const PostPage = () => {
 
   const router = useRouter()
-  const {posts, account, fetchPosts, LSP7Contract, setPosts} = useContext(GlobalContext)
+  const {posts, account, fetchPosts, LSP7Contract, setPosts, commentIdCounter,  setCommentIdCounter} = useContext(GlobalContext)
   const [post, setPost] = useState()
   const [loading, setLoading] = useState(false)
   const [newComment, setNewComment] = useState('')
@@ -30,6 +30,7 @@ const PostPage = () => {
   },[posts, router])
 
   const addComment = async (e) => {
+    console.log(commentIdCounter, 'commentIdCounter')
     e.preventDefault()
     if(account){
       try {
@@ -38,13 +39,14 @@ const PostPage = () => {
         console.log(tx)
         if(tx.status){
           setNewComment('')
-          //TODO FETCH COMMENTSCOUNTERS FROM SM in order to give accurate commentId
 
           //add comment to post
           setPost(prevPost => {
             return {...prevPost, comments: [...prevPost.comments, {
-              id: prevPost.comments.length + 1,
+              id: commentIdCounter+ 1,
               text: newComment,
+              postId,
+              commentor: account
             }]}
           })
 
@@ -53,8 +55,10 @@ const PostPage = () => {
             const newPosts = prevPosts.map(post => {
               if(post.id == postId){
                 return {...post, comments: [...post.comments, {
-                  id: post.comments.length + 1,
+                  id: commentIdCounter+ 1,
                   text: newComment,
+                  postId,
+                  commentor: account
                 }]}
               }
               return post
@@ -63,7 +67,7 @@ const PostPage = () => {
             return newPosts
           }
           )
-
+          setCommentIdCounter(commentIdCounter+ 1)
         }
       } catch(err) {
         console.log(err)
@@ -100,7 +104,7 @@ const PostPage = () => {
             <h1>{post.title}</h1>
             <p>{post.text}</p>
           </div>
-          {post.comments.length && renderComments()}
+          {post.comments.length ? renderComments():null}
           <form onSubmit={ async (e) => await addComment(e)}>
             <textarea
               value={newComment}

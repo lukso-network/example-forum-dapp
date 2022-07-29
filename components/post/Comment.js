@@ -3,10 +3,12 @@ import {GlobalContext} from '../../contexts/GlobalContext'
 
 const Comment = ({comment, setPost, postId }) => {
 
-  const {setPosts, account, LSP7Contract} = useContext(GlobalContext)
+  const {setPosts, account, LSP7Contract } = useContext(GlobalContext)
 
   const deleteComment = async () => {
-    console.log('deleteComment', postId, comment.id, account)
+    console.log('delete comment ')
+    console.log(comment.id, 'comment.id')
+    console.log(postId, 'postId.id')
     if(account == comment.commentor){
       try {
         const tx = await LSP7Contract.methods.removeComment(postId, comment.id).send({from: account})
@@ -15,7 +17,7 @@ const Comment = ({comment, setPost, postId }) => {
 
           //remove comment from post
           setPost(prevPost => {
-            return {...prevPost, comments: prevPost.comments.filter(comment => comment.id != commentId)}
+            return {...prevPost, comments: prevPost.comments.filter(c => comment.id != c.id)}
           }
           )
 
@@ -23,7 +25,7 @@ const Comment = ({comment, setPost, postId }) => {
           setPosts(prevPosts => {
             const newPosts = prevPosts.map(post => {
               if(post.id == postId){
-                return {...post, comments: post.comments.filter(comment => comment.id != commentId)}
+                return {...post, comments: post.comments.filter(c => comment.id != c.id)}
               }
               return post
             })
