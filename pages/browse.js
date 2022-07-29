@@ -1,21 +1,16 @@
 import { Footer, Notifications } from '../components';
 import Link from 'next/link';
-import {useContext, useEffect} from 'react'
+import { useContext, useEffect } from 'react';
 import { GlobalContext } from '../contexts/GlobalContext';
 import Post from '../components/browser/Post';
 
-
 function BrowsePost() {
-
-
-  const {posts} = useContext(GlobalContext);
-
+  const { posts } = useContext(GlobalContext);
 
   const renderPosts = () => {
     return (
       <>
-      {
-        posts.map((post, index) => (
+        {posts.map((post, index) => (
           <div key={index}>
             <Post
               title={post.title}
@@ -25,15 +20,14 @@ function BrowsePost() {
               postId={post.id}
             />
           </div>
-        ))
-      }
+        ))}
       </>
-    )
-  }
+    );
+  };
 
   useEffect(() => {
-    console.log(posts,'posts')
-  }, [posts])
+    console.log(posts, 'posts');
+  }, [posts]);
 
   return (
     <div className="App">
