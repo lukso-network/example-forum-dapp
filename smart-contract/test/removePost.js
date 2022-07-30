@@ -25,6 +25,6 @@ describe("When using Custom LSP7", function () {
     await lsp7Contract.connect(postCreator).deletePost(2);
 
     const postsNumber = await lsp7Contract.fetchPosts();
-    console.log(postsNumber)
+
   });
 });

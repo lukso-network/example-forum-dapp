@@ -4,6 +4,7 @@ import {GlobalContext} from '../../contexts/GlobalContext'
 import Comment from '../../components/post/Comment'
 import Link from 'next/link'
 import { Footer, Notifications } from '../../components';
+import LikeBtn from "../../components/post/LikeBtn"
 
 const PostPage = () => {
 
@@ -14,6 +15,7 @@ const PostPage = () => {
   const [newComment, setNewComment] = useState('')
 
   useEffect(() => {
+    console.log(posts,'posts')
     const postId = router.query.id
     if(posts.length && postId){
       const post = posts.find(post => post.id == postId)
@@ -30,11 +32,11 @@ const PostPage = () => {
   },[posts, router])
 
   const addComment = async (e) => {
-    console.log(commentIdCounter, 'commentIdCounter')
+    const postId = router.query.id
     e.preventDefault()
     if(account){
       try {
-        const postId = router.query.id
+
         const tx = await LSP7Contract.methods.createComment(postId, newComment).send({from: account})
         console.log(tx)
         if(tx.status){
@@ -88,6 +90,29 @@ const PostPage = () => {
      )
   }
 
+  const renderAddComment = () => (
+    <form onSubmit={ async (e) => await addComment(e)}>
+      <textarea
+        value={newComment}
+        cols="30"
+        rows="10"
+        placeholder='Add a comment...'
+        onChange={(e) => setNewComment(e.target.value)}
+      />
+      <button
+        type='submit'
+      >
+        Submit
+      </button>
+    </form>
+  )
+
+  const renderLikeCounter = () => (
+    <div style={{marginLeft: 5}}>
+      {post.likes.length}
+    </div>
+  )
+
   return (
     <div>
       <Link href={'/browse'}>
@@ -105,24 +130,14 @@ const PostPage = () => {
             <p>{post.text}</p>
           </div>
           {post.comments.length ? renderComments():null}
-          <form onSubmit={ async (e) => await addComment(e)}>
-            <textarea
-              value={newComment}
-              cols="30"
-              rows="10"
-              placeholder='Add a comment...'
-              onChange={(e) => setNewComment(e.target.value)}
-            />
-            <button
-              type='submit'
-            >
-              Submit
-            </button>
-          </form>
+          {renderAddComment()}
+          <div style={{display: 'flex'}}>
+            <LikeBtn setPost={setPost} postId={router.query.id}/>
+            {post.likes.length? renderLikeCounter() : null}
+          </div>
           </>
         )
       :null}
-
       <Footer />
     </div>
   )

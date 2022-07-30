@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "@lukso/lsp-smart-contracts/contracts/LSP7DigitalAsset/presets/LSP7Mintable.sol";
-import 'hardhat/console.sol';
+import "hardhat/console.sol";
 
 contract ForumNFT is  LSP7Mintable {
 
@@ -157,20 +157,34 @@ contract ForumNFT is  LSP7Mintable {
     //LIKES FUNCTION
     function like(uint256 _tokenId) public {
       //check if msg.sender is already in the likes array
-      bool isLiked = false;
-      uint likesCount = postByTokenId[_tokenId].likes.length;
-      for (uint256 i = 0; i < likesCount;) {
-        if (postByTokenId[_tokenId].likes[i] == msg.sender) {
+      //find like index
 
-          isLiked = true;
-          delete postByTokenId[_tokenId].likes[i];
+      address[] memory likesList = postByTokenId[_tokenId].likes;
+      uint totalLikes = likesList.length;
+      bool hasLiked = false;
+      uint256 likeIndex = 0;
+      for(uint i = 0; i < totalLikes;) {
+        if(postByTokenId[_tokenId].likes[i] == msg.sender) {
+          hasLiked = true;
+          likeIndex = i;
           break;
         }
-        unchecked{++i;}
+        unchecked {++i;}
       }
-      if (!isLiked) {
+
+      //if like index is 0 then add msg.sender to likes array
+      if(!hasLiked){
         postByTokenId[_tokenId].likes.push(msg.sender);
+      } else {
+        //if like index is not 0 then remove msg.sender from likes array
+        for(uint i = likeIndex; i < totalLikes-1;) {
+          likesList[i] = likesList[i+1];
+          unchecked {++i;}
+        }
+        postByTokenId[_tokenId].likes = likesList;
+        postByTokenId[_tokenId].likes.pop();
       }
+      console.log("likes", postByTokenId[_tokenId].likes.length);
     }
 
     //ADMIN FUNCTION
