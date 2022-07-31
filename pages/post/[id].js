@@ -97,6 +97,7 @@ const PostPage = () => {
         cols="30"
         rows="10"
         placeholder='Add a comment...'
+        required
         onChange={(e) => setNewComment(e.target.value)}
       />
       <button
