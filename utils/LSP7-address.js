@@ -1,10 +1,5 @@
 
-const LSP7InfoObj = (url) => {
-  //return ganache address if in development
-  if (url.includes('localhost')) {
-     return '0x8294cAc95d55350C6B417e0085AF20dCEf5B32ba'
-  }
-  return //l16 address
-}
 
-export default LSP7InfoObj;
+const LSP7Address = '0x441BB91B35478D9c319F94c57eE6075beD112a53' //lukso address
+
+export default LSP7Address;
