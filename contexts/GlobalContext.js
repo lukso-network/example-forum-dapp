@@ -35,8 +35,8 @@ const GlobalProvider = ({children}) => {
       alert('Please install Universal Profile Extension or MetaMask')
     }
     const web3 = new Web3(ethereum)
-    const contractAddress = LSP7Address(window.location.href)
-    setLSP7Contract(new web3.eth.Contract(LSP7Artifact.abi,contractAddress))
+
+    setLSP7Contract(new web3.eth.Contract(LSP7Artifact.abi,LSP7Address))
     getAccount(web3)
 
   }, [])
