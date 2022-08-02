@@ -1,4 +1,5 @@
-export const IPFS_GATEWAY_BASE_URL = 'https://2eff.lukso.dev/ipfs/';
+export const IPFS_GATEWAY_BASE_URL = "https://ipfs.io/ipfs"; //havinf cors issue with lukso IPFS_GATEWAY_BASE_URL
+export const IPFS_BASE_URL = 'https://api.2eff.lukso.dev';
 
 export const CHAIN_IDS = {
   L14: 22,
@@ -16,3 +17,5 @@ export const BLOCK_EXPLORER_URLS = {
   L14: 'https://blockscout.com/lukso/l14',
   L16: 'https://explorer.execution.l16.lukso.network',
 };
+
+export const LSP7Address = '0x857a6809DAE8efAc3A9167Ff6655dcA1b450B969' //lukso address

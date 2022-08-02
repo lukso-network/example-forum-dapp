@@ -16,18 +16,21 @@ describe("When using Custom LSP7", function () {
     await lsp7Contract.deployed();
 
     //create post
-    await lsp7Contract.connect(postCreator).createPost('this is a title', 'this is a description');
+    await lsp7Contract.connect(postCreator).createPost('thisisacid');
 
 
     //create comment
     const postId = 1
-    await lsp7Contract.connect(commentor).createComment(postId, 'this is the first comment');
-    await lsp7Contract.connect(commentor).createComment(postId, 'this is the second comment');
+    await lsp7Contract.connect(commentor).createComment(postId, 'thisacommentcid');
+    await lsp7Contract.connect(commentor).createComment(postId, 'thisanothercommentcid');
 
+    const commentsBeforeDelete = await lsp7Contract.fetchComments(postId);
+    expect(commentsBeforeDelete.length).to.equal(2);
 
+    //delete comment
     const tx = await lsp7Contract.connect(postCreator).removeComment(postId, 1);
-
+    const commentsAfterDelete = await lsp7Contract.fetchComments(postId);
     await lsp7Contract.connect(commentor).removeComment(postId, 2);
-    // expect(commentsLength).to.equal(2)
+    expect(commentsAfterDelete.length).to.equal(1);
   });
 });

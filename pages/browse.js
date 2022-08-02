@@ -31,10 +31,6 @@ function BrowsePost() {
     )
   }
 
-  useEffect(() => {
-    console.log(posts,'posts')
-  }, [posts])
-
   return (
     <div className="App">
       <Link href={'/dashboard'}>

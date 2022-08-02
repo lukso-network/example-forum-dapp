@@ -1,20 +1,18 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
-import "@lukso/lsp-smart-contracts/contracts/LSP7DigitalAsset/presets/LSP7Mintable.sol";
-import "hardhat/console.sol";
+import "@lukso/lsp-smart-contracts/contracts/LSP7DigitalAsset/LSP7DigitalAsset.sol";
 
-contract ForumNFT is  LSP7Mintable {
+contract ForumNFT is  LSP7DigitalAsset {
 
     struct Comment {
-      string text;
+      string cid;
       address commentor;
       uint256 id;
     }
 
     struct Post {
-      string title; //might group title and text into ipfs
-      string text;
+      string cid;
       address author;
       address[] likes;
       Comment[] comments;
@@ -24,7 +22,7 @@ contract ForumNFT is  LSP7Mintable {
     Post latestPost;
     address[] private emptyLikesArr;
     Comment[] private emptyCommentsArr;
-    Comment[] private tempCommentsArr; //used for comments deleting since we can pop struct's arrays
+    Comment[] private tempCommentsArr; //used for comments deleting since we cannot pop struct's arrays
     uint[] public postsIds;
 
     mapping(uint256 => Post) public postByTokenId;
@@ -39,7 +37,7 @@ contract ForumNFT is  LSP7Mintable {
       string memory _symbol,
       address _newOwner,
       bool _isNFT
-    ) LSP7Mintable(_name, _symbol, _newOwner, _isNFT) {
+    ) LSP7DigitalAsset(_name, _symbol, _newOwner, _isNFT) {
       admin = msg.sender;
     }
 
@@ -50,12 +48,11 @@ contract ForumNFT is  LSP7Mintable {
 
 
     //POSTS FUNCTIONS
-    function createPost(string calldata _title, string calldata _text) public {
+    function createPost(string calldata _cid) public {
 
-
-      latestPost.title = _title;
-      latestPost.text = _text;
+      latestPost.cid = _cid;
       latestPost.author = msg.sender;
+      latestPost.likes = emptyLikesArr;
       latestPost.id = ++postsCounter;
 
       postByTokenId[postsCounter] = latestPost;
@@ -64,10 +61,9 @@ contract ForumNFT is  LSP7Mintable {
       _mint(msg.sender, postsCounter, true, "");
     }
 
-    function editPost(uint256 _tokenId, string calldata _title, string calldata _text) public {
+    function editPost(uint256 _tokenId, string calldata _cid) public {
       require(postByTokenId[_tokenId].author == msg.sender, 'Only author can edit post');
-      postByTokenId[_tokenId].title = _title;
-      postByTokenId[_tokenId].text = _text;
+      postByTokenId[_tokenId].cid = _cid;
     }
 
     function deletePost(uint256 _tokenId) public {
@@ -77,15 +73,17 @@ contract ForumNFT is  LSP7Mintable {
       uint256[] memory postsList = postsIds;
       uint256 totalPosts = postsList.length;
       uint256 postIndex;
-      for (uint256 i = 0; i < totalPosts; i++) {
+      for (uint256 i = 0; i < totalPosts;) {
         if (postsList[i] == _tokenId) {
           postIndex = i;
           break;
         }
+        unchecked {++i;}
       }
 
-      for(uint i = postIndex; i < totalPosts-1; i++){
+      for(uint i = postIndex; i < totalPosts-1;){
         postsList[i] = postsList[i+1];
+        unchecked {++i;}
       }
       postsIds = postsList;
       postsIds.pop();
@@ -106,10 +104,10 @@ contract ForumNFT is  LSP7Mintable {
     }
 
     //COMMENTS FUNCTIONS
-    function createComment(uint256 _tokenId, string calldata _text) public {
+    function createComment(uint256 _tokenId, string calldata _cid) public {
 
       Comment memory comment = Comment({
-        text: _text,
+        cid: _cid,
         commentor: msg.sender,
         id: ++commentsCounter
       });
@@ -154,10 +152,22 @@ contract ForumNFT is  LSP7Mintable {
       }
     }
 
+    function fetchComments(uint256 _tokenId) public view returns (Comment[] memory comments) {
+
+      uint256 commentsLength = postByTokenId[_tokenId].comments.length;
+      Comment[] memory commentArray = postByTokenId[_tokenId].comments;
+      comments = new Comment[](commentsLength);
+
+      for (uint i = 0; i < commentsLength;) {
+        comments[i] = commentArray[i];
+        unchecked {++i;}
+      }
+
+      return comments;
+    }
+
     //LIKES FUNCTION
     function like(uint256 _tokenId) public {
-      //check if msg.sender is already in the likes array
-      //find like index
 
       address[] memory likesList = postByTokenId[_tokenId].likes;
       uint totalLikes = likesList.length;
@@ -184,7 +194,11 @@ contract ForumNFT is  LSP7Mintable {
         postByTokenId[_tokenId].likes = likesList;
         postByTokenId[_tokenId].likes.pop();
       }
-      console.log("likes", postByTokenId[_tokenId].likes.length);
+    }
+
+    function fetchLikes(uint256 _tokenId) public view returns (address[] memory likes) {
+      likes = postByTokenId[_tokenId].likes;
+      return likes;
     }
 
     //ADMIN FUNCTION

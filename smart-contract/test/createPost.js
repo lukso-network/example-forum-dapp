@@ -18,7 +18,7 @@ describe("When using Custom LSP7", function () {
     expect(postCreatorBalanceBefore.toNumber()).to.equal(0);
 
     //create post
-    await lsp7Contract.connect(postCreator).createPost('this is a title', 'this is a text');
+    await lsp7Contract.connect(postCreator).createPost('thisisacid');
 
     const postCreatorBalanceAfter = await lsp7Contract.balanceOf(postCreator.address)
     expect(postCreatorBalanceAfter.toNumber()).to.equal(1);
