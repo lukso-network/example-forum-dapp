@@ -5,6 +5,7 @@ import Comment from '../../components/post/Comment'
 import Link from 'next/link'
 import { Footer, Notifications } from '../../components';
 import LikeBtn from "../../components/post/LikeBtn"
+import ipfsNode from '../../utils/ipfsNode'
 
 const PostPage = () => {
 
@@ -35,41 +36,55 @@ const PostPage = () => {
     const postId = router.query.id
     e.preventDefault()
     if(account){
+      let cid;
       try {
 
-        const tx = await LSP7Contract.methods.createComment(postId, newComment).send({from: account})
-        console.log(tx)
-        if(tx.status){
-          setNewComment('')
+        const ipfs = ipfsNode()
+        const postJson = JSON.stringify({text: newComment})
+        const ipfsResult = await ipfs.add({content: postJson, pin: true})
+        cid = ipfsResult.cid.toString()
 
-          //add comment to post
-          setPost(prevPost => {
-            return {...prevPost, comments: [...prevPost.comments, {
-              id: commentIdCounter+ 1,
-              text: newComment,
-              postId,
-              commentor: account
-            }]}
-          })
+      } catch (error) {
+        console.log(error)
+      }
 
-          //replace post in posts
-          setPosts(prevPosts => {
-            const newPosts = prevPosts.map(post => {
-              if(post.id == postId){
-                return {...post, comments: [...post.comments, {
-                  id: commentIdCounter+ 1,
-                  text: newComment,
-                  postId,
-                  commentor: account
-                }]}
+
+      try {
+        if(cid){
+          const tx = await LSP7Contract.methods.createComment(postId, cid).send({from: account})
+
+          if(tx.status){
+            setNewComment('')
+
+            //add comment to post
+            setPost(prevPost => {
+              return {...prevPost, comments: [...prevPost.comments, {
+                id: commentIdCounter+ 1,
+                text: newComment,
+                postId,
+                commentor: account
+              }]}
+            })
+
+            //replace post in posts
+            setPosts(prevPosts => {
+              const newPosts = prevPosts.map(post => {
+                if(post.id == postId){
+                  return {...post, comments: [...post.comments, {
+                    id: commentIdCounter+ 1,
+                    text: newComment,
+                    postId,
+                    commentor: account
+                  }]}
+                }
+                return post
               }
-              return post
+              )
+              return newPosts
             }
             )
-            return newPosts
+            setCommentIdCounter(commentIdCounter+ 1)
           }
-          )
-          setCommentIdCounter(commentIdCounter+ 1)
         }
       } catch(err) {
         console.log(err)
@@ -78,8 +93,6 @@ const PostPage = () => {
       alert('Please connect to Universal Profile Extension or Metamaks')
     }
   }
-
-
 
   const renderComments = () => {
     const postId = router.query.id

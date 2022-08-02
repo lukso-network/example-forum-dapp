@@ -4,6 +4,8 @@ import { Footer, Notifications } from '../components';
 import Link from 'next/link';
 import Profile from '../components/profile';
 import {GlobalContext} from '../contexts/GlobalContext'
+import ipfsNode from '../utils/ipfsNode'
+
 
 function CreatePost() {
   const [blogpost, setBlockpostValues] = useState({
@@ -15,7 +17,8 @@ function CreatePost() {
 
   const router = useRouter();
 
-  const {account, posts, setPosts, LSP7Contract, tokenIdCounter, setTokenIdCounter} = useContext(GlobalContext);
+  const {account, posts, setPosts, LSP7Contract,
+        tokenIdCounter, setTokenIdCounter} = useContext(GlobalContext);
 
   function changeHandler(e) {
     setError('');
@@ -28,19 +31,34 @@ function CreatePost() {
     e.preventDefault();
     if(!ethereum){
       alert('Please install Universal Profile Extension or Meth');
+    }
 
+    let ipfsResult;
+
+    const ipfs = ipfsNode();
+    let cid;
+    try {
+      const postJson = JSON.stringify({title: blogpost.title, text: blogpost.text});
+      ipfsResult = await ipfs.add({content: postJson, pin: true})
+      cid = ipfsResult.cid.toString()
+
+    } catch(er) {
+      console.log(er.message,'er')
+      setError('We are having trouble with ipfs. Please try again later.')
     }
 
     try {
-      const tx = await LSP7Contract.methods.createPost(blogpost.title,blogpost.text).send({from: account})
-      if(tx.status){
-        setPosts([...posts,{
-          title: blogpost.title, text: blogpost.text, author: account,
-          id: tokenIdCounter + 1, comments: [], likes: []
-        }])
-        setTokenIdCounter(s => s + 1)
+      if(ipfsResult) {
+        const tx = await LSP7Contract.methods.createPost(cid).send({from: account})
+        if(tx.status){
+          setPosts([...posts,{
+            title: blogpost.title, text: blogpost.text, author: account,
+            id: tokenIdCounter + 1, comments: [], likes: []
+          }])
+          setTokenIdCounter(s => s + 1)
 
-        router.push('/browse')
+          router.push('/browse')
+        }
       }
     } catch(err) {
       if(err.code == 4001){
@@ -50,7 +68,6 @@ function CreatePost() {
       console.log(err,'err')
       setError('Error with transaction')
     }
-
   }
 
   return (

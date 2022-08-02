@@ -18,16 +18,22 @@ describe("When using Custom LSP7", function () {
     expect(postCreatorBalanceBefore.toNumber()).to.equal(0);
 
     //create post
-    await lsp7Contract.connect(postCreator).createPost('this is a title', 'this is a text');
-    console.log('adding likes')
+    await lsp7Contract.connect(postCreator).createPost('thisisacid');
+
     //add like 1
     const tx = await lsp7Contract.connect(liker1).like(1);
     tx.wait(1)
     //add like 1
     const tx2 = await lsp7Contract.connect(liker2).like(1);
     tx2.wait(1)
-    console.log('remove like')
+
+    const likesBeforeDelete = await lsp7Contract.fetchLikes(1);
+    expect(likesBeforeDelete.length).to.equal(2);
+
     //remove like 1
     await lsp7Contract.connect(liker1).like(1);
+
+    const likesAfterDelete = await lsp7Contract.fetchLikes(1);
+    expect(likesAfterDelete.length).to.equal(1);
   });
 });
