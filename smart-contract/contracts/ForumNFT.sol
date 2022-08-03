@@ -89,7 +89,7 @@ contract ForumNFT is  LSP7DigitalAsset {
       postsIds.pop();
     }
 
-    function fetchPosts() public view returns (Post[] memory posts, uint256, uint256) {
+    function fetchPosts() public view returns (Post[] memory posts, uint256, uint256, address) {
 
       uint256 postsLength = postsIds.length;
       uint256[] memory postArray = postsIds;
@@ -100,7 +100,7 @@ contract ForumNFT is  LSP7DigitalAsset {
         unchecked {++i;}
       }
 
-      return (posts, postsCounter, commentsCounter);
+      return (posts, postsCounter, commentsCounter, admin);
     }
 
     //COMMENTS FUNCTIONS

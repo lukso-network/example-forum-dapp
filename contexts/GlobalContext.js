@@ -11,6 +11,7 @@ const GlobalProvider = ({children}) => {
   const [LSP7Contract, setLSP7Contract] = useState()
   const [tokenIdCounter, setTokenIdCounter] = useState()
   const [commentIdCounter, setCommentIdCounter] = useState()
+  const [adminAddress, setAdminAddress] = useState()
 
   const cidFetcher = async (cid) => {
     try {
@@ -26,8 +27,10 @@ const GlobalProvider = ({children}) => {
 
 
   const fetchPosts = async () => {
+    //request access
+
     try {
-      let {0: postsList, 1: tokenCounter, 2: commentCounter }= await LSP7Contract.methods.fetchPosts().call()
+      let {0: postsList, 1: tokenCounter, 2: commentCounter, 3: admin }= await LSP7Contract.methods.fetchPosts().call()
 
       let formattedPostsList = []
       await Promise.all(
@@ -53,6 +56,7 @@ const GlobalProvider = ({children}) => {
       setPosts(formattedPostsList)
       setTokenIdCounter(parseInt(tokenCounter))
       setCommentIdCounter(parseInt(commentCounter))
+      setAdminAddress(admin)
     } catch(er){
       console.log(er, LSP7Contract)
     }
@@ -88,7 +92,8 @@ const GlobalProvider = ({children}) => {
   return (
     <GlobalContext.Provider value={{
       posts, setPosts, account, LSP7Contract, setTokenIdCounter,
-      tokenIdCounter, fetchPosts, commentIdCounter, setCommentIdCounter
+      tokenIdCounter, fetchPosts, commentIdCounter, setCommentIdCounter,
+      adminAddress
       }}>
       {children}
     </GlobalContext.Provider>

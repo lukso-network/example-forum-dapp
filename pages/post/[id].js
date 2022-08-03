@@ -6,17 +6,18 @@ import Link from 'next/link'
 import { Footer, Notifications } from '../../components';
 import LikeBtn from "../../components/post/LikeBtn"
 import ipfsNode from '../../utils/ipfsNode'
+import DeletePostBtn from "../../components/post/DeletePostBtn"
 
 const PostPage = () => {
 
   const router = useRouter()
-  const {posts, account, fetchPosts, LSP7Contract, setPosts, commentIdCounter,  setCommentIdCounter} = useContext(GlobalContext)
+  const {posts, account, fetchPosts, LSP7Contract,
+    setPosts, commentIdCounter,  setCommentIdCounter, adminAddress} = useContext(GlobalContext)
   const [post, setPost] = useState()
   const [loading, setLoading] = useState(false)
   const [newComment, setNewComment] = useState('')
 
   useEffect(() => {
-    console.log(posts,'posts')
     const postId = router.query.id
     if(posts.length && postId){
       const post = posts.find(post => post.id == postId)
@@ -139,6 +140,11 @@ const PostPage = () => {
       {post?
         (
           <>
+          {
+            account == adminAddress || account == post.author ?
+              <DeletePostBtn postId={post.id} setPosts={setPosts}/>
+            :null
+          }
           <div>
             <h1>{post.title}</h1>
             <p>{post.text}</p>
