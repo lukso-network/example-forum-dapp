@@ -4,14 +4,14 @@ import { GlobalContext } from '../contexts/GlobalContext';
 
 function Login() {
   const router = useRouter();
-  const {  setAccount, setProviderError} = useContext(GlobalContext);
+  const {  setAccount } = useContext(GlobalContext);
 
 
   // IF the user clicks the LOGIN BUTTON
   async function loginExtension() {
-    // Request an account
+
     if(!window.ethereum){
-      setProviderError(true)
+      alert('Please install UP extension or MetaMask');
       return
     }
     // request access to the extension
@@ -39,7 +39,7 @@ function Login() {
         create, comment, and vote on blogposts and their comments.
       </h3>
       <br />
-      <button onClick={loginExtension}>Log in to your browser extension</button>
+      <button  onClick={loginExtension}>Log in to your browser extension</button>
     </div>
   );
 }
