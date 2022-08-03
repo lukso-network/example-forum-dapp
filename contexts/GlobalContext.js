@@ -2,6 +2,8 @@ import {createContext, useState, useEffect} from 'react'
 import Web3 from 'web3'
 import LSP7Artifact from '../utils/forum-lsp7-artifact.json'
 import {IPFS_GATEWAY_BASE_URL, LSP7Address} from '../constants'
+import { useRouter } from 'next/router'
+import {checkBrowserCompatibility, checkMinimalBalance, isEOA, isL16} from '../utils/connect-extension'
 
 export const GlobalContext = createContext()
 
@@ -12,6 +14,15 @@ const GlobalProvider = ({children}) => {
   const [tokenIdCounter, setTokenIdCounter] = useState()
   const [commentIdCounter, setCommentIdCounter] = useState()
   const [adminAddress, setAdminAddress] = useState()
+
+  //ERRORS
+  const [providerError, setProviderError] = useState(false)
+  const [isEOAError, setIsEOAError] = useState(false)
+  const [browserError, setBrowserError] = useState(false)
+  const [chainError, setChainError] = useState(false)
+  const [lowBalanceError, setLowBalanceError] = useState(false)
+
+  const router = useRouter()
 
   const cidFetcher = async (cid) => {
     try {
@@ -27,7 +38,6 @@ const GlobalProvider = ({children}) => {
 
 
   const fetchPosts = async () => {
-    //request access
 
     try {
       let {0: postsList, 1: tokenCounter, 2: commentCounter, 3: admin }= await LSP7Contract.methods.fetchPosts().call()
@@ -68,16 +78,48 @@ const GlobalProvider = ({children}) => {
     })
   }
 
-  useEffect(() => {
-    const {ethereum} = window
-    if(!ethereum){
-      alert('Please install Universal Profile Extension or MetaMask')
-    }
-    const web3 = new Web3(ethereum)
+  const listenForAccountChanges = () => {
+    ethereum.on('accountsChanged', function (accounts) {
+      if(accounts.length) {
+        setAccount(accounts[0])
+      } else {
+        setAccount()
+        router.push('/login')
+      }
+    })
 
-    setLSP7Contract(new web3.eth.Contract(LSP7Artifact.abi,LSP7Address))
-    getAccount(web3)
-  }, [])
+    ethereum.on('networkChanged', function (networkId) {
+      if(networkId !== 2828) {
+        setChainError(true)
+      } else {
+        setChainError(false)
+      }
+    })
+
+  }
+
+  const  ErrorsCheck = async () => {
+    await checkBrowserCompatibility() ? setBrowserError(false): setBrowserError(true)
+    account && await isEOA()? setIsEOAError(true): setIsEOAError(false)
+    await isL16()? setChainError(false): setChainError(true)
+    account && await checkMinimalBalance()? setLowBalanceError(true): setLowBalanceError(true)
+  }
+
+  useEffect(() => {
+    ErrorsCheck()
+
+    const {ethereum} = window
+    if(ethereum) {
+      setProviderError(false)
+      listenForAccountChanges()
+      const web3 = new Web3(ethereum)
+      setLSP7Contract(new web3.eth.Contract(LSP7Artifact.abi,LSP7Address))
+      getAccount(web3)
+    } else {
+      setProviderError(true)
+      router.push('/login')
+    }
+  }, [account])
 
   useEffect(() => {
     if(LSP7Contract){
@@ -93,7 +135,8 @@ const GlobalProvider = ({children}) => {
     <GlobalContext.Provider value={{
       posts, setPosts, account, LSP7Contract, setTokenIdCounter,
       tokenIdCounter, fetchPosts, commentIdCounter, setCommentIdCounter,
-      adminAddress
+      adminAddress, setAccount,
+      providerError, isEOAError, browserError, chainError, lowBalanceError
       }}>
       {children}
     </GlobalContext.Provider>

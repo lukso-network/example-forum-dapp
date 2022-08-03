@@ -1,28 +1,19 @@
-import React, { useEffect } from 'react';
-import { checkNetwork, connectWeb3 } from '../utils/connect-extension';
-import Head from 'next/head';
+import React, { useContext } from 'react';
 import { useRouter } from 'next/router';
-import { Notifications, Footer } from '../components';
+import { GlobalContext } from '../contexts/GlobalContext';
 
 function Login() {
   const router = useRouter();
-  // On mount
-  console.log('Login loaded');
-  useEffect(() => {
-    console.log('login useEffect loaded');
-    login();
-  }, []);
+  const {  setAccount, setProviderError} = useContext(GlobalContext);
 
-  async function login() {
-    if ((await connectWeb3()) && (await checkNetwork())) {
-      router.push('/dashboard');
-    }
-  }
 
   // IF the user clicks the LOGIN BUTTON
   async function loginExtension() {
     // Request an account
-
+    if(!window.ethereum){
+      setProviderError(true)
+      return
+    }
     // request access to the extension
     await window.ethereum
       .request({
@@ -34,6 +25,7 @@ function Login() {
         // IF go to the dashboard
         if (accounts.length) {
           router.push('/dashboard');
+          setAccount(accounts[0])
         } else {
           console.log('User denied access');
         }
@@ -42,16 +34,12 @@ function Login() {
 
   return (
     <div className="App">
-      <Notifications></Notifications>
       <h2>Example Forum dApp</h2>
       <h3 className="centered">
         create, comment, and vote on blogposts and their comments.
       </h3>
-
       <br />
-
       <button onClick={loginExtension}>Log in to your browser extension</button>
-      <Footer />
     </div>
   );
 }

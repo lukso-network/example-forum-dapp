@@ -3,7 +3,6 @@ import {useContext, useEffect, useState} from 'react'
 import {GlobalContext} from '../../contexts/GlobalContext'
 import Comment from '../../components/post/Comment'
 import Link from 'next/link'
-import { Footer, Notifications } from '../../components';
 import LikeBtn from "../../components/post/LikeBtn"
 import ipfsNode from '../../utils/ipfsNode'
 import DeletePostBtn from "../../components/post/DeletePostBtn"
@@ -133,7 +132,6 @@ const PostPage = () => {
       <Link href={'/browse'}>
         <a className="back">&lt;</a>
       </Link>
-      <Notifications />
       {loading?
         <div>Loading...</div>
       :null}
@@ -158,7 +156,6 @@ const PostPage = () => {
           </>
         )
       :null}
-      <Footer />
     </div>
   )
 }

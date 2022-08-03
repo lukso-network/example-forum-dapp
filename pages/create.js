@@ -1,6 +1,5 @@
 import { useState, useContext } from 'react';
 import { useRouter } from 'next/router';
-import { Footer, Notifications } from '../components';
 import Link from 'next/link';
 import Profile from '../components/profile';
 import {GlobalContext} from '../contexts/GlobalContext'
@@ -75,7 +74,6 @@ function CreatePost() {
       <Link href={'/dashboard'}>
         <a className="back">&lt;</a>
       </Link>
-      <Notifications />
       <div className="appContainer">
         <h1>Create a post linked to the blockchain</h1>
         <Profile />
@@ -118,8 +116,6 @@ function CreatePost() {
         </form>
         <div id="status">{blogpost.status}</div>
       </div>
-
-      <Footer />
     </div>
   );
 }
