@@ -3,7 +3,7 @@ import {GlobalContext} from '../../contexts/GlobalContext'
 
 const Comment = ({comment, setPost, postId }) => {
 
-  const {setPosts, account, LSP7Contract } = useContext(GlobalContext)
+  const {setPosts, account, LSP7Contract, adminAddress } = useContext(GlobalContext)
   const deleteComment = async () => {
     try {
       const tx = await LSP7Contract.methods.removeComment(postId, comment.id).send({from: account})
@@ -37,7 +37,7 @@ const Comment = ({comment, setPost, postId }) => {
         {comment.text}
       </div>
       {
-        account == comment.commentor?
+        account == comment.commentor || account == adminAddress ?
           <div style={{marginLeft: 10}} onClick={() => deleteComment()}>
             Delete comment
           </div>

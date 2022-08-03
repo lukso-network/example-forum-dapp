@@ -1,4 +1,3 @@
-const { network } = require("hardhat");
 const hre = require("hardhat");
 
 async function main() {
@@ -7,14 +6,13 @@ async function main() {
   const deployer = accounts[0];
   const deployerAddress = await deployer.getAddress();
 
-  console.log(deployerAddress, 'deployerAddress');
-
+  console.log('deployerAddress: ', deployerAddress);
 
   // Deploy the contract
   const contractFactory = await hre.ethers.getContractFactory("ForumNFT")
   const contract = await contractFactory.deploy(
-    "ForumNFT",
-    "FORUM",
+    "LuksoForum",
+    "LYXtForum",
     deployerAddress,
     false
   );
@@ -27,8 +25,6 @@ async function main() {
 
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
 main()
   .then(() => process.exit(0))
   .catch((error) => {
