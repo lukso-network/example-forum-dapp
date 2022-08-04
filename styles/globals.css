@@ -1,3 +1,5 @@
+
+
 html {
   background-color: #f5f3f3;
 }
@@ -20,7 +22,6 @@ html {
 
 .note,
 .warning {
-  display: none;
   background-color: white;
   border: solid 1px white;
   border-radius: 6px;

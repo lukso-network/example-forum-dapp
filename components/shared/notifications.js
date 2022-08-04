@@ -18,7 +18,7 @@ function Notifications() {
 
   ///ERRORS UI///
   const showExtensionError = () => (
-    <p id="install" className="warning" style={{ display: 'block' }}>
+    <p id="install" className="warning">
     <>Please install the </>
     <a
       rel="noreferrer"
@@ -36,7 +36,7 @@ function Notifications() {
   )
 
   const showBrowserError = () => (
-    <p id="browser" className="warning" style={{ display: 'block' }}>
+    <p id="browser" className="warning">
       <>Please switch to a </>
       <a
         rel="noreferrer"
@@ -58,7 +58,7 @@ function Notifications() {
   )
 
   const showMulipleExtensionsError = () => (
-    <p className="note" id="singular" style={{ display: 'block' }}>
+    <p className="note" id="singular">
       If you have MetaMask AND UP Extension installed, please disable one of
       them! See these guides for{' '}
       <a
@@ -81,7 +81,7 @@ function Notifications() {
   )
 
   const showWrongChainError = () => (
-    <p id="network" className="warning" style={{ display: 'block' }}>
+    <p id="network" className="warning">
       Please change to the{' '}
       <a
         onClick={function () {
@@ -97,7 +97,7 @@ function Notifications() {
   )
 
   const showMetamaskError = () => (
-    <p className="warning" id="extension" style={{ display: 'block' }}>
+    <p className="warning" id="extension">
       <>
         You can use MetaMask with this dApp, but we recommend trying it with
         the
@@ -114,7 +114,7 @@ function Notifications() {
   )
 
   const showLowBalanceError = () => (
-    <p className="warning" id="lowBalanceL16" style={{ display: 'block' }}>
+    <p className="warning" id="lowBalanceL16">
       <>Low account balance. Get funds from </>
       <a
         rel="noreferrer"
@@ -134,7 +134,7 @@ function Notifications() {
       {providerError && !browserError ? showExtensionError() : null}
       {browserError ? showBrowserError():null}
       {!providerError && chainError? showWrongChainError() : null}
-      {!providerError && lowBalanceError? showLowBalanceError() : null}
+      {!providerError && isEOAError && lowBalanceError? showLowBalanceError() : null}
     </div>
   );
 }

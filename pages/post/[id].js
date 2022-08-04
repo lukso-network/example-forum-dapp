@@ -6,6 +6,7 @@ import Link from 'next/link'
 import LikeBtn from "../../components/post/LikeBtn"
 import ipfsNode from '../../utils/ipfsNode'
 import DeletePostBtn from "../../components/post/DeletePostBtn"
+import Loader from "../../components/shared/loader"
 
 const PostPage = () => {
 
@@ -15,6 +16,9 @@ const PostPage = () => {
   const [post, setPost] = useState()
   const [loading, setLoading] = useState(false)
   const [newComment, setNewComment] = useState('')
+  const [error,setError] = useState('');
+  const [onIpfs,setOnIpfs] = useState(false);
+  const [postOnSC,setPostOnSC] = useState(false);
 
   useEffect(() => {
     const postId = router.query.id
@@ -35,6 +39,7 @@ const PostPage = () => {
   const addComment = async (e) => {
     const postId = router.query.id
     e.preventDefault()
+    setLoading(true)
     if(account){
       let cid;
       try {
@@ -43,9 +48,11 @@ const PostPage = () => {
         const postJson = JSON.stringify({text: newComment})
         const ipfsResult = await ipfs.add({content: postJson, pin: true})
         cid = ipfsResult.cid.toString()
+        setOnIpfs(true)
 
       } catch (error) {
         console.log(error)
+        setError('We are having trouble with ipfs. Please try again later.')
       }
 
 
@@ -55,7 +62,7 @@ const PostPage = () => {
 
           if(tx.status){
             setNewComment('')
-
+            setPostOnSC(true)
             //add comment to post
             setPost(prevPost => {
               return {...prevPost, comments: [...prevPost.comments, {
@@ -88,10 +95,15 @@ const PostPage = () => {
         }
       } catch(err) {
         console.log(err)
+        setError('Error with transaction')
+        setLoading(false)
       }
     } else {
       alert('Please connect to Universal Profile Extension or Metamaks')
     }
+    setLoading(false)
+    setOnIpfs(false)
+    setPostOnSC(false)
   }
 
   const renderComments = () => {
@@ -121,12 +133,6 @@ const PostPage = () => {
     </form>
   )
 
-  const renderLikeCounter = () => (
-    <div style={{marginLeft: 5}}>
-      {post.likes.length}
-    </div>
-  )
-
   return (
     <div>
       <Link href={'/browse'}>
@@ -150,9 +156,9 @@ const PostPage = () => {
           {post.comments.length ? renderComments():null}
           {renderAddComment()}
           <div style={{display: 'flex'}}>
-            <LikeBtn setPost={setPost} postId={router.query.id}/>
-            {post.likes.length? renderLikeCounter() : null}
+            <LikeBtn setPost={setPost} postId={router.query.id} post={post}/>
           </div>
+          <Loader name='comment' loading={loading} error={error} onIpfs={onIpfs} postOnSC={postOnSC}/>
           </>
         )
       :null}

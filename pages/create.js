@@ -4,6 +4,8 @@ import Link from 'next/link';
 import Profile from '../components/profile';
 import {GlobalContext} from '../contexts/GlobalContext'
 import ipfsNode from '../utils/ipfsNode'
+import Loader from '../components/shared/loader';
+
 
 
 function CreatePost() {
@@ -13,6 +15,9 @@ function CreatePost() {
   });
 
   const [error,setError] = useState('');
+  const [loading,setLoading] = useState(false);
+  const [onIpfs,setOnIpfs] = useState(false);
+  const [postOnSC,setPostOnSC] = useState(false);
 
   const router = useRouter();
 
@@ -33,6 +38,7 @@ function CreatePost() {
     }
 
     let ipfsResult;
+    setLoading(true);
 
     const ipfs = ipfsNode();
     let cid;
@@ -46,27 +52,39 @@ function CreatePost() {
       setError('We are having trouble with ipfs. Please try again later.')
     }
 
+    setOnIpfs(true);
+
     try {
       if(ipfsResult) {
         const tx = await LSP7Contract.methods.createPost(cid).send({from: account})
+        console.log(tx, 'tx.status')
         if(tx.status){
           setPosts([...posts,{
             title: blogpost.title, text: blogpost.text, author: account,
             id: tokenIdCounter + 1, comments: [], likes: []
           }])
           setTokenIdCounter(s => s + 1)
-
           router.push('/browse')
         }
       }
     } catch(err) {
       if(err.code == 4001){
         console.log('User rejected transaction')
+        setLoading(false)
         return
       }
       console.log(err,'err')
       setError('Error with transaction')
     }
+    setLoading(false);
+    setOnIpfs(false);
+    setPostOnSC(false)
+  }
+
+  const closeModal = (error) => {
+    setLoading(false)
+    setError('');
+
   }
 
   return (
@@ -77,6 +95,7 @@ function CreatePost() {
       <div className="appContainer">
         <h1>Create a post linked to the blockchain</h1>
         <Profile />
+        <Loader name='post' loading={loading} error={error} onIpfs={onIpfs} postOnSC={postOnSC}/>
         {
           error?
           <div className="warning center" >
@@ -84,6 +103,7 @@ function CreatePost() {
           </div>
           :<div id="error"/>
         }
+
         <form onSubmit={function (e){ createPost(e)}}>
           <label>Title</label>
           <input
