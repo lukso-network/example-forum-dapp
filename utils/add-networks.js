@@ -17,6 +17,7 @@ export async function addLuksoL16Testnet() {
         },
       ],
     });
+    return true;
   } catch (err) {
     // User denied access
   }

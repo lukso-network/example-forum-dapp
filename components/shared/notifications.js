@@ -2,11 +2,19 @@
 import { addLuksoL14Testnet, addLuksoL16Testnet } from '../../utils/add-networks';
 import { useContext } from 'react';
 import {GlobalContext} from '../../contexts/GlobalContext';
+import Web3 from 'web3';
 
 function Notifications() {
 
-  const { providerError, isEOAError, browserError, chainError } = useContext(GlobalContext);
+  const { providerError, isEOAError, browserError, chainError, setAccount, lowBalanceError } = useContext(GlobalContext);
 
+  async function swapNetwork( ) {
+    //get account from metamask
+    const { ethereum } = window;
+    const web3 = new Web3(ethereum);
+    const accounts = await web3.eth.getAccounts();
+    await addLuksoL16Testnet() && setAccount( accounts[0] );
+  }
 
   ///ERRORS UI///
   const showExtensionError = () => (
@@ -123,16 +131,13 @@ function Notifications() {
     <div className="notificationContainer">
       {isEOAError? showMulipleExtensionsError() : null}
       {isEOAError? showMetamaskError() : null}
-      {providerError ? showExtensionError() : null}
+      {providerError && !browserError ? showExtensionError() : null}
       {browserError ? showBrowserError():null}
       {!providerError && chainError? showWrongChainError() : null}
-      {/* {!providerError && lowBalanceError? showLowBalanceError() : null} */}
+      {!providerError && lowBalanceError? showLowBalanceError() : null}
     </div>
   );
 }
 
-async function swapNetwork( ) {
-  await addLuksoL16Testnet();
-}
 
 export default Notifications;

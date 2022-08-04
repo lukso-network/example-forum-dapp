@@ -14,6 +14,7 @@ const GlobalProvider = ({children}) => {
   const [tokenIdCounter, setTokenIdCounter] = useState()
   const [commentIdCounter, setCommentIdCounter] = useState()
   const [adminAddress, setAdminAddress] = useState()
+  const [networkId, setNetworkId] = useState()
 
   //ERRORS
   const [providerError, setProviderError] = useState(false)
@@ -78,6 +79,7 @@ const GlobalProvider = ({children}) => {
     })
   }
 
+
   const listenForAccountChanges = () => {
     ethereum.on('accountsChanged', function (accounts) {
       if(accounts.length) {
@@ -89,7 +91,7 @@ const GlobalProvider = ({children}) => {
     })
 
     ethereum.on('networkChanged', function (networkId) {
-      if(networkId !== 2828) {
+      if(networkId != 2828) {
         setChainError(true)
       } else {
         setChainError(false)
@@ -102,12 +104,11 @@ const GlobalProvider = ({children}) => {
     await checkBrowserCompatibility() ? setBrowserError(false): setBrowserError(true)
     account && await isEOA()? setIsEOAError(true): setIsEOAError(false)
     await isL16()? setChainError(false): setChainError(true)
-    account && await checkMinimalBalance()? setLowBalanceError(true): setLowBalanceError(true)
+    account && await checkMinimalBalance()? setLowBalanceError(false): setLowBalanceError(true)
   }
 
   useEffect(() => {
     ErrorsCheck()
-
     const {ethereum} = window
     if(ethereum) {
       setProviderError(false)
@@ -120,6 +121,10 @@ const GlobalProvider = ({children}) => {
       router.push('/login')
     }
   }, [account])
+
+  useEffect(() => {
+    ErrorsCheck()
+  }, [networkId])
 
   useEffect(() => {
     if(LSP7Contract){
@@ -135,7 +140,7 @@ const GlobalProvider = ({children}) => {
     <GlobalContext.Provider value={{
       posts, setPosts, account, LSP7Contract, setTokenIdCounter,
       tokenIdCounter, fetchPosts, commentIdCounter, setCommentIdCounter,
-      adminAddress, setAccount,
+      adminAddress, setAccount, setNetworkId,
       providerError, isEOAError, browserError, chainError, lowBalanceError
       }}>
       {children}
