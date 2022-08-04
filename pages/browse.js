@@ -1,15 +1,12 @@
-import { Footer, Notifications } from '../components';
 import Link from 'next/link';
-import {useContext, useEffect} from 'react'
+import { useContext } from 'react'
 import { GlobalContext } from '../contexts/GlobalContext';
 import Post from '../components/browser/Post';
 
 
 function BrowsePost() {
 
-
   const {posts} = useContext(GlobalContext);
-
 
   const renderPosts = () => {
     return (
@@ -36,10 +33,8 @@ function BrowsePost() {
       <Link href={'/dashboard'}>
         <a className="back">&lt;</a>
       </Link>
-      <Notifications />
       <h1>Browse Page</h1>
       {posts.length ? renderPosts() : null}
-      <Footer />
     </div>
   );
 }

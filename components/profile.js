@@ -1,7 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { Footer, Notifications } from '../components';
-import Link from 'next/link';
 import identicon from 'ethereum-blockies-base64';
 import Web3 from 'web3';
 import ERC725js from '@erc725/erc725.js';
