@@ -36,9 +36,6 @@ function BrowsePost() {
 
   return (
     <div className="App">
-      <Link href={'/dashboard'}>
-        <a className="back">&lt;</a>
-      </Link>
       <h1>Browse Page</h1>
       {posts.length ? renderPosts() : null}
     </div>

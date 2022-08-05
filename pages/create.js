@@ -53,7 +53,7 @@ function CreatePost() {
     }
 
     setOnIpfs(true);
-    console.log('account', account)
+
     try {
       if(ipfsResult) {
         const tx = await LSP7Contract.methods.createPost(cid).send({from: account})
@@ -71,7 +71,6 @@ function CreatePost() {
       if(err.code == 4001){
         console.log('User rejected transaction')
         setLoading(false)
-
         return
       }
       console.log(err,'err')
@@ -87,7 +86,7 @@ function CreatePost() {
       {account &&
           (
           <>
-          <Link href={'/dashboard'}>
+          <Link href={'/browse'}>
             <a className="back">&lt;</a>
           </Link>
           <div className="appContainer">
