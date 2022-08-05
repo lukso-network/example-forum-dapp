@@ -14,7 +14,8 @@ async function main() {
     "LuksoForum",
     "LYXtForum",
     deployerAddress,
-    false
+    false,
+    {gasPrice: hre.ethers.BigNumber.from(20_000_000_000)}
   );
 
 
