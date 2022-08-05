@@ -131,15 +131,17 @@ function Notifications() {
   );
 
   return (
-    <div className="notificationContainer">
-      {isEOAError ? showMulipleExtensionsError() : null}
-      {isEOAError ? showMetamaskError() : null}
-      {providerError && !browserError ? showExtensionError() : null}
-      {browserError ? showBrowserError() : null}
-      {!providerError && chainError ? showWrongChainError() : null}
-      {!providerError && isEOAError && lowBalanceError
-        ? showLowBalanceError()
-        : null}
+    <div className="notificationWrapping">
+      <div className="notificationContainer">
+        {isEOAError ? showMulipleExtensionsError() : null}
+        {isEOAError ? showMetamaskError() : null}
+        {providerError && !browserError ? showExtensionError() : null}
+        {browserError ? showBrowserError() : null}
+        {!providerError && chainError ? showWrongChainError() : null}
+        {!providerError && isEOAError && lowBalanceError
+          ? showLowBalanceError()
+          : null}
+      </div>
     </div>
   );
 }
