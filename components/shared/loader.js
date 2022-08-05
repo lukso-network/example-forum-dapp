@@ -1,4 +1,5 @@
 import Modal from 'react-modal';
+import {useState} from 'react'
 
 const customStyles = {
   content: {
@@ -12,10 +13,18 @@ const customStyles = {
 };
 
 
-const Loader = ({name, loading, error, onIpfs, postOnSC}) => {
+const Loader = ({name, loading, setLoading, onIpfs, postOnSC }) => {
+
+  const [error, setError] = useState('');
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+
+  const closeModal = (error) => {
+    setLoading(false)
+    setError('');
   }
 
 

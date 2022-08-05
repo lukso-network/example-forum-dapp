@@ -158,7 +158,7 @@ const PostPage = () => {
           <div style={{display: 'flex'}}>
             <LikeBtn setPost={setPost} postId={router.query.id} post={post}/>
           </div>
-          <Loader name='comment' loading={loading} error={error} onIpfs={onIpfs} postOnSC={postOnSC}/>
+          <Loader name='comment' setLoading={setLoading} loading={loading} onIpfs={onIpfs} postOnSC={postOnSC}/>
           </>
         )
       :null}

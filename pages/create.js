@@ -53,7 +53,7 @@ function CreatePost() {
     }
 
     setOnIpfs(true);
-
+    console.log('account', account)
     try {
       if(ipfsResult) {
         const tx = await LSP7Contract.methods.createPost(cid).send({from: account})
@@ -71,6 +71,7 @@ function CreatePost() {
       if(err.code == 4001){
         console.log('User rejected transaction')
         setLoading(false)
+
         return
       }
       console.log(err,'err')
@@ -81,61 +82,61 @@ function CreatePost() {
     setPostOnSC(false)
   }
 
-  const closeModal = (error) => {
-    setLoading(false)
-    setError('');
-
-  }
-
   return (
     <div className="App">
-      <Link href={'/dashboard'}>
-        <a className="back">&lt;</a>
-      </Link>
-      <div className="appContainer">
-        <h1>Create a post linked to the blockchain</h1>
-        <Profile />
-        <Loader name='post' loading={loading} error={error} onIpfs={onIpfs} postOnSC={postOnSC}/>
-        {
-          error?
-          <div className="warning center" >
-            {error}
-          </div>
-          :<div id="error"/>
-        }
+      {account &&
+          (
+          <>
+          <Link href={'/dashboard'}>
+            <a className="back">&lt;</a>
+          </Link>
+          <div className="appContainer">
+            <h1>Create a post linked to the blockchain</h1>
+            <Profile />
+            <Loader name='post' setLoading={setLoading} loading={loading} error={error} onIpfs={onIpfs} postOnSC={postOnSC}/>
+            {
+              error?
+              <div className="warning center" >
+                {error}
+              </div>
+              :<div id="error"/>
+            }
 
-        <form onSubmit={function (e){ createPost(e)}}>
-          <label>Title</label>
-          <input
-            required
-            className="titleField"
-            placeholder="What are you writing about?"
-            id="posttitle"
-            type="text"
-            value={blogpost.title}
-            name="title"
-            onChange={changeHandler}
-          ></input>
-          <br />
-          <label>Text</label>
-          <textarea
-            required
-            id="posttext"
-            placeholder="Start writing a blogpost..."
-            className="textField"
-            type="text"
-            value={blogpost.text}
-            name="text"
-            onChange={changeHandler}
-          ></textarea>
-          <button
-            type='submit'
-          >
-            submit
-          </button>
-        </form>
-        <div id="status">{blogpost.status}</div>
-      </div>
+            <form onSubmit={function (e){ createPost(e)}}>
+              <label>Title</label>
+              <input
+                required
+                className="titleField"
+                placeholder="What are you writing about?"
+                id="posttitle"
+                type="text"
+                value={blogpost.title}
+                name="title"
+                onChange={changeHandler}
+              ></input>
+              <br />
+              <label>Text</label>
+              <textarea
+                required
+                id="posttext"
+                placeholder="Start writing a blogpost..."
+                className="textField"
+                type="text"
+                value={blogpost.text}
+                name="text"
+                onChange={changeHandler}
+              ></textarea>
+              <button
+                type='submit'
+              >
+                submit
+              </button>
+            </form>
+            <div id="status">{blogpost.status}</div>
+          </div>
+          </>
+          )
+      }
     </div>
   );
 }

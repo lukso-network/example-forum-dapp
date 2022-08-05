@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { GlobalContext } from '../contexts/GlobalContext';
 
 function Login() {
   const router = useRouter();
-  const {  setAccount } = useContext(GlobalContext);
+  const {  setAccount, account } = useContext(GlobalContext);
 
 
   // IF the user clicks the LOGIN BUTTON
@@ -24,13 +24,19 @@ function Login() {
         // check if any number of accounts was returned
         // IF go to the dashboard
         if (accounts.length) {
-          router.push('/dashboard');
+          router.push('/browse');
           setAccount(accounts[0])
         } else {
           console.log('User denied access');
         }
       });
   }
+
+  useEffect(() => {
+    if(account){
+      router.push('./browse')
+    }
+  }, [account])
 
   return (
     <div className="App">

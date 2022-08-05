@@ -18,4 +18,4 @@ export const BLOCK_EXPLORER_URLS = {
   L16: 'https://explorer.execution.l16.lukso.network',
 };
 
-export const LSP7Address = '0xe1Aac25d96e477882a0294b50640AE2d98a31c1f' //lukso address
+export const LSP7Address = '0x267C63d366A937Db62127D9efE59c61757f556D1' //lukso address

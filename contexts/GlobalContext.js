@@ -75,7 +75,11 @@ const GlobalProvider = ({children}) => {
 
   const getAccount = async (web3) => {
     await web3.eth.getAccounts().then(accounts => {
+      if(!accounts.length && router.pathname !== '/login') {
+        router.push('/login')
+      }
       setAccount(accounts[0])
+      return accounts[0]
     })
   }
 
@@ -85,7 +89,7 @@ const GlobalProvider = ({children}) => {
       if(accounts.length) {
         setAccount(accounts[0])
       } else {
-        setAccount()
+        setAccount('')
         router.push('/login')
       }
     })
@@ -115,12 +119,13 @@ const GlobalProvider = ({children}) => {
       listenForAccountChanges()
       const web3 = new Web3(ethereum)
       setLSP7Contract(new web3.eth.Contract(LSP7Artifact.abi,LSP7Address))
-      getAccount(web3)
-    } else {
-      setProviderError(true)
-      router.push('/login')
+      !account && getAccount(web3)
     }
-  }, [account])
+    else {
+      setProviderError(true)
+    }
+  }, [])
+
 
   useEffect(() => {
     ErrorsCheck()

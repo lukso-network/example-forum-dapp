@@ -11,6 +11,12 @@ function BrowsePost() {
   const renderPosts = () => {
     return (
       <>
+      <button
+        className="nav-link dashboardButton"
+        onClick={() => router.push('/create')}
+      >
+        Create Posts
+      </button>
       {
         posts.map((post, index) => (
           <div key={index}>
