@@ -2,11 +2,13 @@ import Link from 'next/link';
 import { useContext } from 'react'
 import { GlobalContext } from '../contexts/GlobalContext';
 import Post from '../components/browser/Post';
-
+import { useRouter } from 'next/router';
 
 function BrowsePost() {
 
   const {posts} = useContext(GlobalContext);
+
+  const router = useRouter();
 
   const renderPosts = () => {
     return (

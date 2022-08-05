@@ -94,7 +94,7 @@ const GlobalProvider = ({children}) => {
       }
     })
 
-    ethereum.on('networkChanged', function (networkId) {
+    ethereum.on('chainChanged', function (networkId) {
       if(networkId != 2828) {
         setChainError(true)
       } else {
@@ -112,7 +112,6 @@ const GlobalProvider = ({children}) => {
   }
 
   useEffect(() => {
-    ErrorsCheck()
     const {ethereum} = window
     if(ethereum) {
       setProviderError(false)
@@ -126,6 +125,9 @@ const GlobalProvider = ({children}) => {
     }
   }, [])
 
+  useEffect(() => {
+    ErrorsCheck()
+  }, [account])
 
   useEffect(() => {
     ErrorsCheck()
