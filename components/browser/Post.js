@@ -1,15 +1,14 @@
-import {useRouter} from 'next/router'
+import { useRouter } from 'next/router';
 
-const Post = ({title, text, likes, postId}) => {
+const Post = ({ title, text, likes, postId }) => {
+  const router = useRouter();
 
-  const router = useRouter()
-
-  return(
+  return (
     <div onClick={() => router.push(`/post/${postId}`)}>
       <h5>{title}</h5>
       <p>{text}</p>
     </div>
-  )
-}
+  );
+};
 
-export default Post
+export default Post;

@@ -1,6 +1,6 @@
 import GlobalProvider from '../contexts/GlobalContext';
 import '../styles/globals.css';
-import { Notifications, Footer  } from '../components/shared';
+import { Notifications, Footer } from '../components/shared';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }) {
       <Component {...pageProps} />
       <Footer />
     </GlobalProvider>
-  )
+  );
 }
 
 export default MyApp;

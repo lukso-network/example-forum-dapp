@@ -4,15 +4,13 @@ import { GlobalContext } from '../contexts/GlobalContext';
 
 function Login() {
   const router = useRouter();
-  const {  setAccount, account } = useContext(GlobalContext);
-
+  const { setAccount, account } = useContext(GlobalContext);
 
   // IF the user clicks the LOGIN BUTTON
   async function loginExtension() {
-
-    if(!window.ethereum){
-      alert('Please install UP extension or MetaMask');
-      return
+    if (!window.ethereum) {
+      alert('Please connect to Universal Profile Extension or MetaMask');
+      return;
     }
 
     try {
@@ -27,13 +25,13 @@ function Login() {
           // IF go to the dashboard
           if (accounts.length) {
             router.push('/browse');
-            setAccount(accounts[0])
+            setAccount(accounts[0]);
           } else {
             console.log('User denied access');
           }
         });
     } catch (error) {
-      if(error.message === 'User denied access'){
+      if (error.message === 'User denied access') {
         console.log('User denied access');
       } else {
         console.log(error);
@@ -42,10 +40,10 @@ function Login() {
   }
 
   useEffect(() => {
-    if(account){
-      router.push('./browse')
+    if (account) {
+      router.push('./browse');
     }
-  }, [account])
+  }, [account]);
 
   return (
     <div className="App">
@@ -54,7 +52,7 @@ function Login() {
         create, comment, and vote on blogposts and their comments.
       </h3>
       <br />
-      <button  onClick={loginExtension}>Log in to your browser extension</button>
+      <button onClick={loginExtension}>Log in to your browser extension</button>
     </div>
   );
 }

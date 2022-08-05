@@ -2,11 +2,9 @@ import { useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Profile from '../components/profile';
-import {GlobalContext} from '../contexts/GlobalContext'
-import ipfsNode from '../utils/ipfs-node'
+import { GlobalContext } from '../contexts/GlobalContext';
+import ipfsNode from '../utils/ipfs-node';
 import Loader from '../components/shared/loader';
-
-
 
 function CreatePost() {
   const [blogpost, setBlockpostValues] = useState({
@@ -14,27 +12,33 @@ function CreatePost() {
     text: '',
   });
 
-  const [error,setError] = useState('');
-  const [loading,setLoading] = useState(false);
-  const [onIpfs,setOnIpfs] = useState(false);
-  const [postOnSC,setPostOnSC] = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [onIpfs, setOnIpfs] = useState(false);
+  const [postOnSC, setPostOnSC] = useState(false);
 
   const router = useRouter();
 
-  const {account, posts, setPosts, LSP7Contract,
-        tokenIdCounter, setTokenIdCounter} = useContext(GlobalContext);
+  const {
+    account,
+    posts,
+    setPosts,
+    LSP7Contract,
+    tokenIdCounter,
+    setTokenIdCounter,
+  } = useContext(GlobalContext);
 
   function changeHandler(e) {
     setError('');
     setBlockpostValues((prevValues) => {
       return { ...prevValues, [e.target.name]: e.target.value };
     });
-  };
+  }
 
   async function createPost(e) {
     e.preventDefault();
-    if(!ethereum){
-      alert('Please install Universal Profile Extension or Meth');
+    if (!ethereum) {
+      alert('Please connect to Universal Profile Extension or MetaMask');
     }
 
     let ipfsResult;
@@ -43,64 +47,83 @@ function CreatePost() {
     const ipfs = ipfsNode();
     let cid;
     try {
-      const postJson = JSON.stringify({title: blogpost.title, text: blogpost.text});
-      ipfsResult = await ipfs.add({content: postJson, pin: true})
-      cid = ipfsResult.cid.toString()
-
-    } catch(er) {
-      console.log(er.message,'er')
-      setError('We are having trouble with ipfs. Please try again later.')
+      const postJson = JSON.stringify({
+        title: blogpost.title,
+        text: blogpost.text,
+      });
+      ipfsResult = await ipfs.add({ content: postJson, pin: true });
+      cid = ipfsResult.cid.toString();
+    } catch (er) {
+      console.log(er.message, 'er');
+      setError('We are having trouble with ipfs. Please try again later.');
     }
 
     setOnIpfs(true);
     try {
-      if(ipfsResult) {
-        const tx = await LSP7Contract.methods.createPost(cid).send({from: account})
-        console.log(tx, 'tx.status')
-        if(tx.status){
-          setPosts([...posts,{
-            title: blogpost.title, text: blogpost.text, author: account,
-            id: tokenIdCounter + 1, comments: [], likes: []
-          }])
-          setTokenIdCounter(s => s + 1)
-          router.push('/browse')
+      if (ipfsResult) {
+        const tx = await LSP7Contract.methods
+          .createPost(cid)
+          .send({ from: account });
+        console.log(tx, 'tx.status');
+        if (tx.status) {
+          setPosts([
+            ...posts,
+            {
+              title: blogpost.title,
+              text: blogpost.text,
+              author: account,
+              id: tokenIdCounter + 1,
+              comments: [],
+              likes: [],
+            },
+          ]);
+          setTokenIdCounter((s) => s + 1);
+          router.push('/browse');
         }
       }
-    } catch(err) {
-      if(err.code == 4001){
-        console.log('User rejected transaction')
-        setLoading(false)
-        return
+    } catch (err) {
+      if (err.code == 4001) {
+        console.log('User rejected transaction');
+        setLoading(false);
+        return;
       }
-      console.log(err,'err')
-      setError('Error with transaction')
+      console.log(err, 'err');
+      setError('Error with transaction');
     }
     setLoading(false);
     setOnIpfs(false);
-    setPostOnSC(false)
+    setPostOnSC(false);
   }
 
   return (
     <div className="App">
-      {account &&
-          (
-          <>
+      {account && (
+        <>
           <Link href={'/browse'}>
             <a className="back">&lt;</a>
           </Link>
           <div className="appContainer">
             <h1>Create a post linked to the blockchain</h1>
             <Profile />
-            <Loader name='post' setLoading={setLoading} loading={loading} error={error} onIpfs={onIpfs} postOnSC={postOnSC}/>
-            {
-              error?
-              <div className="warning center" >
-                {error}
-              </div>
-              :<div id="error"/>
-            }
+            <Loader
+              name="post"
+              setLoading={setLoading}
+              loading={loading}
+              error={error}
+              onIpfs={onIpfs}
+              postOnSC={postOnSC}
+            />
+            {error ? (
+              <div className="warning center">{error}</div>
+            ) : (
+              <div id="error" />
+            )}
 
-            <form onSubmit={function (e){ createPost(e)}}>
+            <form
+              onSubmit={function (e) {
+                createPost(e);
+              }}
+            >
               <label>Title</label>
               <input
                 required
@@ -124,17 +147,12 @@ function CreatePost() {
                 name="text"
                 onChange={changeHandler}
               ></textarea>
-              <button
-                type='submit'
-              >
-                submit
-              </button>
+              <button type="submit">submit</button>
             </form>
             <div id="status">{blogpost.status}</div>
           </div>
-          </>
-          )
-      }
+        </>
+      )}
     </div>
   );
 }

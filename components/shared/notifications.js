@@ -1,48 +1,52 @@
-
-import { addLuksoL14Testnet, addLuksoL16Testnet } from '../../utils/add-networks';
+import {
+  addLuksoL14Testnet,
+  addLuksoL16Testnet,
+} from '../../utils/add-networks';
 import { useContext } from 'react';
-import {GlobalContext} from '../../contexts/GlobalContext';
+import { GlobalContext } from '../../contexts/GlobalContext';
 import Web3 from 'web3';
 
 function Notifications() {
+  const {
+    providerError,
+    isEOAError,
+    browserError,
+    chainError,
+    setAccount,
+    lowBalanceError,
+  } = useContext(GlobalContext);
 
-  const { providerError, isEOAError, browserError, chainError, setAccount, lowBalanceError } = useContext(GlobalContext);
-
-  async function swapNetwork( ) {
+  async function swapNetwork() {
     //get account from metamask
     const { ethereum } = window;
     const web3 = new Web3(ethereum);
     const accounts = await web3.eth.getAccounts();
-    await addLuksoL16Testnet() && setAccount( accounts[0] );
+    (await addLuksoL16Testnet()) && setAccount(accounts[0]);
   }
 
   ///ERRORS UI///
   const showExtensionError = () => (
     <p id="install" className="warning">
-    <>Please install the </>
-    <a
-      rel="noreferrer"
-      href="https://docs.lukso.tech/guides/universal-profile/browser-extension/install-browser-extension"
-      target="_blank"
-    >
-      Universal Profile Browser Extension
-    </a>
-    <> or </>
-    <a rel="noreferrer" href="https://metamask.io/" target="_blank">
-      MetaMask
-    </a>
-    <> to use this dApp.</>
-  </p>
-  )
+      <>Please install the </>
+      <a
+        rel="noreferrer"
+        href="https://docs.lukso.tech/guides/universal-profile/browser-extension/install-browser-extension"
+        target="_blank"
+      >
+        Universal Profile Browser Extension
+      </a>
+      <> or </>
+      <a rel="noreferrer" href="https://metamask.io/" target="_blank">
+        MetaMask
+      </a>
+      <> to use this dApp.</>
+    </p>
+  );
 
   const showBrowserError = () => (
     <p id="browser" className="warning">
       <>Please switch to a </>
-      <a
-        rel="noreferrer"
-        href="https://www.google.com/chrome/"
-        target="_blank"
-      >
+      <a rel="noreferrer" href="https://www.google.com/chrome/" target="_blank">
         Chrome
       </a>
       <> or </>
@@ -55,7 +59,7 @@ function Notifications() {
       </a>
       <> browser to use this dApp.</>
     </p>
-  )
+  );
 
   const showMulipleExtensionsError = () => (
     <p className="note" id="singular">
@@ -78,7 +82,7 @@ function Notifications() {
       </a>
       <>.</>
     </p>
-  )
+  );
 
   const showWrongChainError = () => (
     <p id="network" className="warning">
@@ -94,13 +98,12 @@ function Notifications() {
       </a>
       <> test network to use this dApp.</>
     </p>
-  )
+  );
 
   const showMetamaskError = () => (
     <p className="warning" id="extension">
       <>
-        You can use MetaMask with this dApp, but we recommend trying it with
-        the
+        You can use MetaMask with this dApp, but we recommend trying it with the
       </>{' '}
       <a
         rel="noreferrer"
@@ -111,7 +114,7 @@ function Notifications() {
       </a>
       <> to show author information.</>
     </p>
-  )
+  );
 
   const showLowBalanceError = () => (
     <p className="warning" id="lowBalanceL16">
@@ -125,19 +128,20 @@ function Notifications() {
       </a>
       <> to send transactions.</>
     </p>
-  )
+  );
 
   return (
     <div className="notificationContainer">
-      {isEOAError? showMulipleExtensionsError() : null}
-      {isEOAError? showMetamaskError() : null}
+      {isEOAError ? showMulipleExtensionsError() : null}
+      {isEOAError ? showMetamaskError() : null}
       {providerError && !browserError ? showExtensionError() : null}
-      {browserError ? showBrowserError():null}
-      {!providerError && chainError? showWrongChainError() : null}
-      {!providerError && isEOAError && lowBalanceError? showLowBalanceError() : null}
+      {browserError ? showBrowserError() : null}
+      {!providerError && chainError ? showWrongChainError() : null}
+      {!providerError && isEOAError && lowBalanceError
+        ? showLowBalanceError()
+        : null}
     </div>
   );
 }
-
 
 export default Notifications;
