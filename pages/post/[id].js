@@ -4,7 +4,7 @@ import {GlobalContext} from '../../contexts/GlobalContext'
 import Comment from '../../components/post/Comment'
 import Link from 'next/link'
 import LikeBtn from "../../components/post/LikeBtn"
-import ipfsNode from '../../utils/ipfsNode'
+import ipfsNode from '../../utils/ipfs-node'
 import DeletePostBtn from "../../components/post/DeletePostBtn"
 import Loader from "../../components/shared/loader"
 

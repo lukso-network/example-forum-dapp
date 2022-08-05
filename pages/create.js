@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Profile from '../components/profile';
 import {GlobalContext} from '../contexts/GlobalContext'
-import ipfsNode from '../utils/ipfsNode'
+import ipfsNode from '../utils/ipfs-node'
 import Loader from '../components/shared/loader';
 
 
@@ -53,7 +53,6 @@ function CreatePost() {
     }
 
     setOnIpfs(true);
-
     try {
       if(ipfsResult) {
         const tx = await LSP7Contract.methods.createPost(cid).send({from: account})
