@@ -4,7 +4,7 @@ import {GlobalContext} from '../../contexts/GlobalContext'
 import Comment from '../../components/post/Comment'
 import Link from 'next/link'
 import LikeBtn from "../../components/post/LikeBtn"
-import ipfsNode from '../../utils/ipfsNode'
+import ipfsNode from '../../utils/ipfs-node'
 import DeletePostBtn from "../../components/post/DeletePostBtn"
 import Loader from "../../components/shared/loader"
 
@@ -158,7 +158,7 @@ const PostPage = () => {
           <div style={{display: 'flex'}}>
             <LikeBtn setPost={setPost} postId={router.query.id} post={post}/>
           </div>
-          <Loader name='comment' loading={loading} error={error} onIpfs={onIpfs} postOnSC={postOnSC}/>
+          <Loader name='comment' setLoading={setLoading} loading={loading} onIpfs={onIpfs} postOnSC={postOnSC}/>
           </>
         )
       :null}
