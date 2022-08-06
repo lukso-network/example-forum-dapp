@@ -250,7 +250,7 @@ const PostPage = () => {
           </div>
           <div className="pageWrapperBottom ">
             <div className="postInteraction">
-              {account !== adminAddress || account == post.author ? (
+              {account == adminAddress || account == post.author ? (
                 <DeletePostBtn postId={post.id} setPosts={setPosts} />
               ) : null}
               <LikeBtn setPost={setPost} postId={router.query.id} post={post} />
