@@ -200,7 +200,9 @@ const PostPage = () => {
         required
         onChange={(e) => setNewComment(e.target.value)}
       />
-      <button type="submit">Submit comment</button>
+      <button type="submit" className="postButton">
+        Submit comment
+      </button>
     </form>
   );
 
@@ -239,8 +241,8 @@ const PostPage = () => {
                 </div>
                 <div className="postRight">
                   <div className="">
-                    {blogpost.likes} likes and {blogpost.comments.length} since{' '}
-                    {blogpost.date}
+                    {blogpost.likes} likes and {blogpost.comments.length}{' '}
+                    comments since {blogpost.date}
                   </div>
                   <h4> {blogpost.title}</h4>
                   <p className="textPreview">{blogpost.text}</p>
@@ -250,7 +252,7 @@ const PostPage = () => {
           </div>
           <div className="pageWrapperBottom ">
             <div className="postInteraction">
-              {account == adminAddress || account == post.author ? (
+              {account !== adminAddress || account == post.author ? (
                 <DeletePostBtn postId={post.id} setPosts={setPosts} />
               ) : null}
               <LikeBtn setPost={setPost} postId={router.query.id} post={post} />

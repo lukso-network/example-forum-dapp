@@ -67,12 +67,12 @@ const LikeBtn = ({ setPost, postId, post }) => {
       <div style={{ display: 'flex' }}>
         {isLike ? (
           <button className="postButton" onClick={likePost}>
-            Dislike this blogpost
+            Dislike blogpost
           </button>
         ) : null}
         {!isLike ? (
           <button className="postButton" onClick={likePost}>
-            Like this blogpost
+            Like blogpost
           </button>
         ) : null}
         {post.likes.length ? renderLikeCounter() : null}
