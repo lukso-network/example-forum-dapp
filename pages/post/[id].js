@@ -245,15 +245,15 @@ const PostPage = () => {
                     {blogpost.likes} likes and {blogpost.comments.length}{' '}
                     comments since {blogpost.date}
                   </div>
-                  <h4> {blogpost.title}</h4>
-                  <p className="textPreview">{blogpost.text}</p>
+                  <h4> {post.title}</h4>
+                  <p className="textPreview">{post.text}</p>
                 </div>
               </div>
             </div>
           </div>
           <div className="pageWrapperBottom ">
             <div className="postInteraction">
-              {account !== adminAddress || account == post.author ? (
+              {account == adminAddress || account == post.author ? (
                 <DeletePostBtn postId={post.id} setPosts={setPosts} />
               ) : null}
               <LikeBtn setPost={setPost} postId={router.query.id} post={post} />
