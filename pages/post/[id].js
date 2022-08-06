@@ -242,8 +242,9 @@ const PostPage = () => {
                 </div>
                 <div className="postRight">
                   <div className="">
-                    {blogpost.likes} likes and {blogpost.comments.length}{' '}
-                    comments since {blogpost.date}
+                    {post.likes.length ? <a>{post.likes.length} </a> : '0'}
+                    likes and {blogpost.comments.length} comments since{' '}
+                    {blogpost.date}
                   </div>
                   <h4> {post.title}</h4>
                   <p className="textPreview">{post.text}</p>

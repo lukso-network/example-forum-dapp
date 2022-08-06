@@ -58,10 +58,6 @@ const LikeBtn = ({ setPost, postId, post }) => {
     }
   };
 
-  const renderLikeCounter = () => (
-    <div style={{ marginLeft: 5 }}>{post.likes.length}</div>
-  );
-
   return (
     <div>
       <div style={{ display: 'flex' }}>
@@ -75,7 +71,6 @@ const LikeBtn = ({ setPost, postId, post }) => {
             Like blogpost
           </button>
         ) : null}
-        {post.likes.length ? renderLikeCounter() : null}
       </div>
       {likeFailure ? <p style={{ color: 'red' }}>Like failed</p> : null}
       {likeSuccess ? <p style={{ color: 'green' }}>Like success</p> : null}
