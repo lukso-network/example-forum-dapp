@@ -193,6 +193,7 @@ const PostPage = () => {
   const renderAddComment = () => (
     <form onSubmit={async (e) => await addComment(e)}>
       <textarea
+        className="commentArea"
         value={newComment}
         cols="30"
         rows="10"
@@ -200,7 +201,7 @@ const PostPage = () => {
         required
         onChange={(e) => setNewComment(e.target.value)}
       />
-      <button type="submit" className="postButton">
+      <button type="submit" className="commentButton">
         Submit comment
       </button>
     </form>

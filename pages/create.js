@@ -147,7 +147,9 @@ function CreatePost() {
                 name="text"
                 onChange={changeHandler}
               ></textarea>
-              <button type="submit">submit</button>
+              <button type="submit" className="postButton">
+                submit blogpost
+              </button>
             </form>
             <div id="status">{blogpost.status}</div>
           </div>

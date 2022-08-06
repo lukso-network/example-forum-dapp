@@ -187,7 +187,7 @@ html {
 
 .pageWrapperTop {
   background-color: rgba(0, 0, 0, 0.07);
-  padding: 1%;
+  padding: 1% 1% 0% 1%;
   width: 100%;
   max-width: 1010px;
   border-radius: 5px 5px 0px 0px;
@@ -195,15 +195,15 @@ html {
 
 .pageWrapperBottom {
   background-color: rgba(0, 0, 0, 0.07);
-  padding: 0% 1% 0% 1%;
+  padding: 1% ;
   width: 100%;
   max-width: 1010px;
   border-radius: 0px 0px 5px 5px;
   display: flex;
   align-items: left;
   justify-content: left;
+  margin-bottom: -1%;
 }
-
 
 .leftBrowsePage {
   border-radius: 5px;
@@ -329,10 +329,9 @@ html {
 .socialSection {
   margin-top: 40px;
   width: 100%;
-  padding-left: 10px;
   background-color: rgba(0, 0, 0, 0.07);
   padding: 1%;
-  width: 95%;
+  width: 100%;
   max-width: 1010px;
   border-radius: 5px;
 }
@@ -340,8 +339,9 @@ html {
 .postInteraction {
   background-color: #E4E2E2;
   border-radius: 0px 5px 5px 0px;
-  padding-right: 5px;
+  padding-right: 1%;
   display: inline-flex;
+  margin-bottom: -1%;
 }
 
 textarea {
@@ -350,7 +350,20 @@ textarea {
 }
 
 .postButton {
-  width: 203px;
+  width: 200px;
   margin-right: 12px;
   float: left;
 }
+
+.commentButton {
+  width: 200px;
+  margin-right: 12px;
+  float: left;
+  margin-bottom: 0%;
+}
+
+.commentArea {
+  min-height: 70px;
+  margin-bottom: 1%;
+}
+
