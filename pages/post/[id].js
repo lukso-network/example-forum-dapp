@@ -262,7 +262,6 @@ const PostPage = () => {
           </div>
           <div className="socialSection">
             {renderAddComment()}
-            {post.comments.length ? renderComments() : null}
 
             <Loader
               name="comment"
@@ -271,6 +270,10 @@ const PostPage = () => {
               onIpfs={onIpfs}
               postOnSC={postOnSC}
             />
+          </div>
+          <div className="pageWrapper">
+            {' '}
+            {post.comments.length ? renderComments() : null}
           </div>
         </>
       ) : null}
