@@ -22,8 +22,8 @@ const DeletePostBtn = ({ postId }) => {
   };
 
   return (
-    <button onClick={() => deletePost()} className="btn btn-danger">
-      Delete Post
+    <button onClick={() => deletePost()} className="btn btn-danger postButton">
+      Delete this blogpost
     </button>
   );
 };

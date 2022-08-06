@@ -7,7 +7,7 @@ const LikeBtn = ({ setPost, postId, post }) => {
   const [likeFailure, setLikeFailure] = useState(false);
   const [likeSuccess, setLikeSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [isLike, setLike] = useState(false);
   const likePost = async () => {
     setLoading(true);
     try {
@@ -45,6 +45,7 @@ const LikeBtn = ({ setPost, postId, post }) => {
       }
       setLoading(false);
       setLikeSuccess(true);
+      setLike(!isLike);
       setTimeout(() => {
         setLikeSuccess(false);
       }, 3000);
@@ -64,7 +65,16 @@ const LikeBtn = ({ setPost, postId, post }) => {
   return (
     <div>
       <div style={{ display: 'flex' }}>
-        <p onClick={likePost}>Like</p>
+        {isLike ? (
+          <button className="postButton" onClick={likePost}>
+            Dislike this blogpost
+          </button>
+        ) : null}
+        {!isLike ? (
+          <button className="postButton" onClick={likePost}>
+            Like this blogpost
+          </button>
+        ) : null}
         {post.likes.length ? renderLikeCounter() : null}
       </div>
       {likeFailure ? <p style={{ color: 'red' }}>Like failed</p> : null}

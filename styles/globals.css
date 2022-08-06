@@ -97,7 +97,6 @@ html {
 }
 
 .notificationContainer {
-
   max-width: 1050px;
 }
 
@@ -176,4 +175,183 @@ html {
 }
 .back:hover, .back:focus {
   background-color: #c8c7c7;
+}
+
+.pageWrapper {
+  background-color: rgba(0, 0, 0, 0.07);
+  padding: 1%;
+  width: 95%;
+  max-width: 1010px;
+  border-radius: 5px;
+}
+
+.pageWrapperTop {
+  background-color: rgba(0, 0, 0, 0.07);
+  padding: 1%;
+  width: 100%;
+  max-width: 1010px;
+  border-radius: 5px 5px 0px 0px;
+}
+
+.pageWrapperBottom {
+  background-color: rgba(0, 0, 0, 0.07);
+  padding: 0% 1% 0% 1%;
+  width: 100%;
+  max-width: 1010px;
+  border-radius: 0px 0px 5px 5px;
+  display: flex;
+  align-items: left;
+  justify-content: left;
+}
+
+
+.leftBrowsePage {
+  border-radius: 5px;
+  width: 20%;
+  float: left;
+  margin-right: 0px;
+  min-width: 190px;
+}
+
+.rightBrowsePage {
+  border-radius: 5px;
+  width: 80%;
+  float: left;
+  min-height: 500px;
+}
+
+.blogPostPage {
+  border-radius: 5px;
+  width: 100%;
+  float: left;
+  min-height: 400px;
+  background-color: #F5F3F3;
+}
+
+.rightEmptyPage {
+  background-color: #F5F3F3;
+  border-radius: 5px;
+  width: 79%;
+  float: left;
+  min-height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: space-between;
+  flex-wrap: nowrap;
+  flex-direction: column;
+}
+
+.post {
+  cursor: pointer;
+  background-color: #F5F3F3;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  width: 100%;
+  height: 150px;
+}
+
+.fullpost {
+  background-color: #F5F3F3;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.postprofile {
+  min-height: 100px;
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+}
+.postprofile .username {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.2em;
+}
+.postprofile .description {
+  margin-top: 10px;
+  font-size: 1em;
+}
+.postprofile .profileImage {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: auto;
+  margin-bottom: 10px;
+}
+.postprofile .profileImage .image, .postprofile .profileImage .identicon {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-size: cover;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.postprofile .profileImage .image {
+  position: absolute;
+  top: 6px;
+  margin: 0 6px;
+  width: 88px;
+  height: 88px;
+  background-color: rgba(196,196,196,0.5);
+}
+
+.postLeft {
+  padding: 10px;
+  border-radius: 5px;
+  width: 20%;
+  float: left;
+  margin-right: 1%;
+  text-align: center;
+}
+
+.postRight {
+  border-left: 2px solid #E4E2E2;  
+  padding: 10px;
+  width: 79%;
+  float: left;
+  height: 100%;
+}
+
+.textPreview {
+  margin-top: -5px;
+  min-height: 50px;
+  border-radius: 5px;
+}
+
+.post:hover {
+  background-color: #f1eded;
+}
+
+.socialSection {
+  margin-top: 40px;
+  width: 100%;
+  padding-left: 10px;
+  background-color: rgba(0, 0, 0, 0.07);
+  padding: 1%;
+  width: 95%;
+  max-width: 1010px;
+  border-radius: 5px;
+}
+
+.postInteraction {
+  background-color: #E4E2E2;
+  border-radius: 0px 5px 5px 0px;
+  padding-right: 5px;
+  display: inline-flex;
+}
+
+textarea {
+  resize: none;
+  background-color: #F5F3F3;
+}
+
+.postButton {
+  width: 220px;
+  margin-right: 12px;
+  margin-top: -6px;
+  float: left;
 }

@@ -1,8 +1,8 @@
-import Link from 'next/link';
 import { useContext } from 'react';
 import { GlobalContext } from '../contexts/GlobalContext';
 import Post from '../components/browser/Post';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 function BrowsePost() {
   const { posts } = useContext(GlobalContext);
@@ -11,13 +11,7 @@ function BrowsePost() {
 
   const renderPosts = () => {
     return (
-      <>
-        <button
-          className="nav-link dashboardButton"
-          onClick={() => router.push('/create')}
-        >
-          Create Posts
-        </button>
+      <div className="rightBrowsePage">
         {posts.map((post, index) => (
           <div key={index}>
             <Post
@@ -29,14 +23,31 @@ function BrowsePost() {
             />
           </div>
         ))}
-      </>
+      </div>
+    );
+  };
+
+  const showPlaceholder = () => {
+    return (
+      <div className="rightEmptyPage">
+        <Image src="/empty-up.png" width="150" height="150" />
+        <div>No forum posts yet.</div>
+      </div>
     );
   };
 
   return (
     <div className="App">
-      <h1>Browse Page</h1>
-      {posts.length ? renderPosts() : null}
+      <h1>Sample Forum dApp</h1>
+      <div className="pageWrapper">
+        <div className="leftBrowsePage">
+          <button className="nav-link" onClick={() => router.push('/create')}>
+            Create New Post
+          </button>
+        </div>
+        {!posts.length ? showPlaceholder() : null}
+        {posts.length ? renderPosts() : null}
+      </div>
     </div>
   );
 }
