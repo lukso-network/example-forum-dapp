@@ -242,7 +242,7 @@ const PostPage = () => {
                 </div>
                 <div className="postRight">
                   <div className="">
-                    {post.likes.length ? <a>{post.likes.length} </a> : '0'}
+                    {post.likes.length ? <a>{post.likes.length} </a> : '0 '}
                     likes and {blogpost.comments.length} comments since{' '}
                     {blogpost.date}
                   </div>
