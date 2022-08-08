@@ -38,8 +38,6 @@ const Post = ({ title, text, likes, postId }) => {
     );
 
     const blockie = identicon('0xFB010D3F1282629a4E9Ef51A355D6AD7B4e2979e');
-
-    // generate identicon
     handleBlogpostValues('identicon', blockie);
 
     // TODO: Get date from blogpost

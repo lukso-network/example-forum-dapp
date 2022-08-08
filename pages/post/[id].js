@@ -271,7 +271,7 @@ const PostPage = () => {
               postOnSC={postOnSC}
             />
           </div>
-          <div className="pageWrapper">
+          <div className="pageWrapperComments">
             {' '}
             {post.comments.length ? renderComments() : null}
           </div>

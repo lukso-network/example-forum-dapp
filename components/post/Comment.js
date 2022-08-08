@@ -1,9 +1,35 @@
-import { useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { GlobalContext } from '../../contexts/GlobalContext';
+import identicon from 'ethereum-blockies-base64';
 
 const Comment = ({ comment, setPost, postId }) => {
   const { setPosts, account, LSP7Contract, adminAddress } =
     useContext(GlobalContext);
+
+  const [postComment, setCommentValues] = useState({
+    text: '',
+    author: '',
+    identicon: '',
+    name: 'anonymous',
+    profilePicture: '',
+  });
+
+  const handleCommentValues = (name, value) => {
+    setCommentValues((prevValues) => {
+      return { ...prevValues, [name]: value };
+    });
+  };
+
+  // On mount
+  useEffect(() => {
+    loadIdenticonPicture();
+  }, []);
+
+  async function loadIdenticonPicture() {
+    const blockie = identicon('0xFB010D3F1282629a4E9Ef51A355D6AD7B4e2979e');
+    handleCommentValues('identicon', blockie);
+  }
+
   const deleteComment = async () => {
     try {
       const tx = await LSP7Contract.methods
@@ -39,13 +65,39 @@ const Comment = ({ comment, setPost, postId }) => {
   };
 
   return (
-    <div style={{ display: 'flex' }}>
-      <div>{comment.text}</div>
-      {account == comment.commentor || account == adminAddress ? (
-        <div style={{ marginLeft: 10 }} onClick={() => deleteComment()}>
-          Delete comment
+    <div className="blogComments">
+      <div className="commentLeft">
+        <div className="commentprofile">
+          <div className="profileImage">
+            <div
+              className="identicon"
+              style={{
+                backgroundImage: 'url(' + postComment.identicon + ')',
+              }}
+              id="identicon"
+            ></div>
+            <div
+              className="image"
+              id="image"
+              style={{
+                backgroundImage: 'url(' + postComment.profilePicture + ')',
+              }}
+            ></div>
+          </div>
         </div>
-      ) : null}
+      </div>
+      <div className="commentRight">
+        <b>@{postComment.name}</b>
+        <p className="commentText">{comment.text}</p>
+        {account == comment.commentor || account == adminAddress ? (
+          <button
+            className="deleteCommentButton"
+            onClick={() => deleteComment()}
+          >
+            Delete comment
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 };
