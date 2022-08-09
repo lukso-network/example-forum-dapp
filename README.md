@@ -1,34 +1,36 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Example Forum dApp
 
-## Getting Started
+This repository is an example forum dApp built to showcase how [Universal Profiles](https://docs.lukso.tech/standards/universal-profile/introduction) could function within fully decentralized applications. Users can log in with their extension to create [LSP7](https://docs.lukso.tech/standards/nft-2.0/LSP7-Digital-Asset) blog posts uploaded directly to IPFS and linked to a custom smart contract that inherits a Digital Asset Token.
 
-First, run the development server:
+Each blog post comes with a creation date and likes and can be the origin of multiple comments. All blog posts and comments can also be deleted by their owners. All the author information is fetched from Universal Profiles and the custom smart contract directly.
+
+**Admin Functionality**: With the admin functionality, the owner of the forum contract has the right to delete posts and comments to maintain a healthy forum.
+
+## Learnings
+
+- How to extend LSPs with functionality
+- Integration of UPs into social media use cases
+- Sample dApp with the Next.JS (React) tech stack
+- Equal EOA workflow in terms of smart contract interaction
+
+## Live Demo
+
+Deployed to the LUKSO example dApp section at [examples.lukso.tech](https://examples.lukso.tech/).
+
+## Showcase
+
+WIP - add pictures
+
+## Local Development
 
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Production Build
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```bash
+npm run build
+```
