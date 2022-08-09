@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { GlobalContext } from '../../contexts/GlobalContext';
 import identicon from 'ethereum-blockies-base64';
 
-const Comment = ({ comment, setPost, postId }) => {
+const Comment = ({ comment, setPost, postId, post }) => {
   const { setPosts, account, LSP7Contract, adminAddress } =
     useContext(GlobalContext);
 
@@ -26,8 +26,14 @@ const Comment = ({ comment, setPost, postId }) => {
   }, []);
 
   async function loadIdenticonPicture() {
-    const blockie = identicon('0xFB010D3F1282629a4E9Ef51A355D6AD7B4e2979e');
+    const blockie = identicon(account);
     handleCommentValues('identicon', blockie);
+    if(post.authorAttrs.profilePicture){
+      handleCommentValues('profilePicture', post.authorAttrs.profilePicture);
+    }
+    if(post.authorAttrs.name){
+      handleCommentValues('name', post.authorAttrs.name);
+    }
   }
 
   const deleteComment = async () => {

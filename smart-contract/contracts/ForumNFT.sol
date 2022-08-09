@@ -38,7 +38,7 @@ contract ForumNFT is  LSP7DigitalAsset {
       address _newOwner,
       bool _isNFT
     ) LSP7DigitalAsset(_name, _symbol, _newOwner, _isNFT) {
-      admin = msg.sender;
+      admin = _newOwner;
     }
 
     modifier onlyAdmin {
