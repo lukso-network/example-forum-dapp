@@ -1,7 +1,7 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useRef } from 'react';
 import Web3 from 'web3';
 import LSP7Artifact from '../utils/forum-lsp7-artifact.json';
-import { IPFS_GATEWAY_BASE_URL, LSP7Address } from '../constants';
+import { IPFS_GATEWAY_BASE_URL, LSP7Address, RPC_URLS } from '../constants';
 import { useRouter } from 'next/router';
 import {
   checkBrowserCompatibility,
@@ -9,6 +9,9 @@ import {
   isEOA,
   isL16,
 } from '../utils/connect-extension';
+import { ERC725 }  from "@erc725/erc725.js"
+import erc725Schema from '@erc725/erc725.js/schemas/LSP3UniversalProfileMetadata.json'
+import getProfileUrl from '../utils/get-profile-url';
 
 export const GlobalContext = createContext();
 
@@ -30,6 +33,7 @@ const GlobalProvider = ({ children }) => {
 
   const router = useRouter();
 
+
   const cidFetcher = async (cid) => {
     try {
       const res = await fetch(`${IPFS_GATEWAY_BASE_URL}/${cid}`);
@@ -40,6 +44,20 @@ const GlobalProvider = ({ children }) => {
       return;
     }
   };
+
+  const fetchLSP3Data = async (address) => {
+    const provider = new Web3.providers.HttpProvider(RPC_URLS.L16)
+    try {
+      const config = { ipfsGateway: IPFS_GATEWAY_BASE_URL };
+      const profile = new ERC725(erc725Schema, address, provider, config);
+      const LSP3Profile = await profile.fetchData("LSP3Profile");
+      console.log(LSP3Profile);
+      return LSP3Profile
+    } catch(er) {
+      // console.log(er)
+      return false
+    }
+  }
 
   const fetchPosts = async () => {
     try {
@@ -53,7 +71,7 @@ const GlobalProvider = ({ children }) => {
       let formattedPostsList = [];
       await Promise.all(
         await postsList.map(async (post) => {
-          const { title, text } = await cidFetcher(post.cid);
+          const { title, text, date } = await cidFetcher(post.cid);
           let comments = [];
           if (post.comments) {
             // fetching comments cids and transforming them to objects
@@ -67,7 +85,15 @@ const GlobalProvider = ({ children }) => {
               })
             );
           }
-          const postObj = { title, text, ...post, comments };
+          //fetch author data from LSP3Profile contract
+          const authorData = await fetchLSP3Data(post.author);
+          let authorAttrs = {name: '', profilePicture: ''}
+          if(authorData) {
+            authorAttrs.profilePicture = getProfileUrl(authorData.value.LSP3Profile.profileImage);
+            authorAttrs.name = authorData.value.LSP3Profile.name
+          }
+
+          const postObj = { title, text, ...post, comments, authorAttrs, date };
           text && title && formattedPostsList.push(postObj);
         })
       );

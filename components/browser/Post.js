@@ -2,7 +2,8 @@ import { useRouter } from 'next/router';
 import identicon from 'ethereum-blockies-base64';
 import { useEffect, useState } from 'react';
 
-const Post = ({ title, text, likes, postId }) => {
+const Post = ({ title, text, likes, postId, comments, name,
+  profilePicture, authorAddress, date }) => {
   const router = useRouter();
   const identiconPicture = '';
   const accounts = '';
@@ -10,6 +11,8 @@ const Post = ({ title, text, likes, postId }) => {
   // On mount
   useEffect(() => {
     loadIdenticonPicture();
+    formatText()
+    formatDate()
   }, []);
 
   const [blogpost, setBlockpostValues] = useState({
@@ -18,7 +21,7 @@ const Post = ({ title, text, likes, postId }) => {
     author: '',
     identicon: '',
     name: 'anonymous',
-    date: '3rd March 2022',
+    date: '',
     profilePicture: '',
     likes: 0,
     comments: [],
@@ -30,28 +33,44 @@ const Post = ({ title, text, likes, postId }) => {
     });
   };
 
-  async function loadIdenticonPicture() {
-    // TODO: Get author form blogpost
-    handleBlogpostValues(
-      'author',
-      '0xFB010D3F1282629a4E9Ef51A355D6AD7B4e2979e'
-    );
+  const formatDate = () => {
 
-    const blockie = identicon('0xFB010D3F1282629a4E9Ef51A355D6AD7B4e2979e');
+        var today = new Date(date);
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+
+        today = dd + '.' + mm + '.' + yyyy;
+        handleBlogpostValues('date', today);
+  }
+
+  const formatText = () => {
+        // Trimm title if it has too many characters
+      if (title.length > 32) {
+        handleBlogpostValues('title', title.substring(0, 32) + '...');
+      } else {
+        handleBlogpostValues('title', title);
+      }
+
+      // Trimm text if it has too many characters
+      if (text.length > 100) {
+        handleBlogpostValues('text', text.substring(0, 100) + '...');
+      } else {
+        handleBlogpostValues('text', text);
+      }
+  }
+
+  async function loadIdenticonPicture() {
+
+    const blockie = identicon(authorAddress);
+
+    // generate identicon
     handleBlogpostValues('identicon', blockie);
 
-    // TODO: Get date from blogpost
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-
-    today = dd + '.' + dd + '.' + yyyy;
-    handleBlogpostValues('date', today);
 
     // Trimm title if it has too many characters
-    if (title.length > 20) {
-      handleBlogpostValues('title', title.substring(0, 20) + '...');
+    if (title.length > 32) {
+      handleBlogpostValues('title', title.substring(0, 32) + '...');
     } else {
       handleBlogpostValues('title', title);
     }
@@ -76,20 +95,44 @@ const Post = ({ title, text, likes, postId }) => {
               }}
               id="identicon"
             ></div>
-            <div
-              className="image"
-              id="image"
-              style={{
-                backgroundImage: 'url(' + blogpost.profilePicture + ')',
-              }}
-            ></div>
+            {
+              profilePicture ?
+              (
+                <div
+                  className="image"
+                  id="image"
+                  style={{
+                    backgroundImage: 'url(' + profilePicture + ')',
+                  }}
+                ></div>
+              ):
+              (
+              <div
+                className="image" d
+                id="image"
+              ></div>
+              )
+            }
+
           </div>
-          <div>@{blogpost.name}</div>
+          {
+            name? (
+              <a
+                href={`https://l16.universalprofile.cloud/${authorAddress}`}
+                target='_blank'
+                rel="noreferrer"
+              >
+                @{name}
+              </a>
+            ):
+              '@anonymous'
+          }
         </div>
       </div>
       <div className="postRight">
         <div className="">
-          {blogpost.likes} likes and {blogpost.comments.length} comments since{' '}
+          {likes.length} {likes.length > 1? 'likes':'like'} and {comments.length}
+          {comments.length > 1? ' comments': ' comment'} since{' '}
           {blogpost.date}
         </div>
         <h4> {blogpost.title}</h4>
