@@ -16,6 +16,7 @@ function CreatePost() {
   const [loading, setLoading] = useState(false);
   const [onIpfs, setOnIpfs] = useState(false);
   const [postOnSC, setPostOnSC] = useState(false);
+  const [authorAttrs, setAuthorAttrs] = useState({name: '', profilePicture: ''});
 
   const router = useRouter();
 
@@ -50,6 +51,7 @@ function CreatePost() {
       const postJson = JSON.stringify({
         title: blogpost.title,
         text: blogpost.text,
+        date: new Date().toISOString()
       });
       ipfsResult = await ipfs.add({ content: postJson, pin: true });
       cid = ipfsResult.cid.toString();
@@ -64,14 +66,17 @@ function CreatePost() {
         const tx = await LSP7Contract.methods
           .createPost(cid)
           .send({ from: account });
-        console.log(tx, 'tx.status');
+
         if (tx.status) {
+          console.log(authorAttrs, 'authorAttrs')
           setPosts([
             ...posts,
             {
               title: blogpost.title,
               text: blogpost.text,
+              date: new Date().toISOString(),
               author: account,
+              authorAttrs,
               id: tokenIdCounter + 1,
               comments: [],
               likes: [],
@@ -104,7 +109,7 @@ function CreatePost() {
           </Link>
           <div className="appContainer">
             <h1>Create a post linked to the blockchain</h1>
-            <Profile />
+            <Profile setAuthorAttrs={setAuthorAttrs}/>
             <Loader
               name="post"
               setLoading={setLoading}

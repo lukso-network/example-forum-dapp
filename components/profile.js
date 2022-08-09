@@ -5,12 +5,12 @@ import ERC725js from '@erc725/erc725.js';
 import LSP3UniversalProfileMetaDataSchema from '@erc725/erc725.js/schemas/LSP3UniversalProfileMetadata.json';
 import { IPFS_GATEWAY_BASE_URL } from '../constants';
 import _ from 'underscore';
+import getProfileImage from '../utils/get-profile-url';
 
-export default function Profile() {
+export default function Profile({setAuthorAttrs}) {
   const [profileInfo, setProfileInfo] = useState({
     address: '',
     name: '',
-    description: '',
     picURL: '',
     identiconURL: '',
     isEOA: false,
@@ -63,30 +63,14 @@ export default function Profile() {
       handleProfileInfo('isEOA', true);
       return;
     }
-
+    const name = metaData.value.LSP3Profile.name
     handleProfileInfo('name', metaData.value.LSP3Profile.name);
-    handleProfileInfo('description', metaData.value.LSP3Profile.description);
 
+    const img = metaData.value.LSP3Profile.profileImage
     // GET the right image size for the profile image from the profile images array
-    let profilePicture = _.find(
-      metaData.value.LSP3Profile.profileImage,
-      (image) => {
-        if (image.width >= 200 && image.width <= 500) return image;
-      }
-    );
-
-    if (!profilePicture) {
-      // If there is no image of the preferred size, take the default one
-      if (metaData.value.LSP3Profile.profileImage) {
-        profilePicture = metaData.value.LSP3Profile.profileImage[0];
-      }
-    } else {
-      profilePicture.url = profilePicture.url.replace(
-        'ipfs://',
-        IPFS_GATEWAY_BASE_URL
-      );
-      handleProfileInfo('picURL', profilePicture.url);
-    }
+    let profilePicture = getProfileImage(img);
+    handleProfileInfo('picURL', profilePicture);
+    setAuthorAttrs({name,  profilePicture})
   }
 
   return (
@@ -109,7 +93,6 @@ export default function Profile() {
       </div>
       <span className="username"> {profileInfo.name} </span>
       <p className="addressField">{profileInfo.address}</p>
-      <p className="description">{profileInfo.description}</p>
     </div>
   );
 }

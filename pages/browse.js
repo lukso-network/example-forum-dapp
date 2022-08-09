@@ -20,6 +20,10 @@ function BrowsePost() {
               comments={post.comments}
               likes={post.likes}
               postId={post.id}
+              name={post.authorAttrs.name}
+              profilePicture={post.authorAttrs.profilePicture}
+              authorAddress={post.author}
+              date={post.date}
             />
           </div>
         ))}

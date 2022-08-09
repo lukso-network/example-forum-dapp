@@ -29,12 +29,11 @@ const PostPage = () => {
   const [postOnSC, setPostOnSC] = useState(false);
 
   const [blogpost, setBlockpostValues] = useState({
-    title: 'This is an Example Blogpost',
-    text: 'Developing a unified ecosystem with profiles and intertwined token standards is fundamental to an aspiring Web3. Economies will most likely form within distinct networks because of high-capacity utilization on existing networks, the resulting fees, and limited scalability options. By introducing a new ecosystem with innovative standards and tools that enable interoperability, LUKSO will deliver a blockchain for creatives to move Web3 to a mainstream user base. \n Its Layer-1 solution with PoS consensus and sharding will bring light to energy efficiency and scalability. Contract-based accounts will deliver much-needed functionality at the cost of more computation. What may not be a big deal with lower network utilization, relay services will become an essential element to assure ease of use for individuals in the long term. However, capacity limitations should not hinder the emergence and development of promising ideas. \n LSPs can be seen as a confluence of many proposals that were already partially ideated in the Ethereum ecosystem but too early, undefined and infeasible. As the inventor of these new standards, LUKSO is positioned as the first driver of mainstream adoption. If we look back at what has led to the adoption of single standards, like ERC20 or ERC721, we can only assume what this ecosystem of ten well-thought-out building blocks could entail. Let us be excited about the future of blockchain-based profiles. The LUKSO network will be a significant milestone in the evolution of Web3.',
+    title: '',
+    text: '',
     author: '',
     identicon: '',
     name: 'anonymous',
-    date: '3rd March 2022',
     profilePicture: '',
     likes: 0,
     comments: [],
@@ -50,12 +49,18 @@ const PostPage = () => {
       } else {
         router.push('/browse');
       }
-      loadBlogpost();
     } else {
       setLoading(true);
       LSP7Contract && fetchPosts();
     }
   }, [posts, router]);
+
+  useEffect(() => {
+    if(post){
+      console.log(post, 'post from here')
+      loadBlogpost();
+    }
+  }, [post])
 
   const handleBlogpostValues = (name, value) => {
     setBlockpostValues((prevValues) => {
@@ -64,14 +69,7 @@ const PostPage = () => {
   };
 
   function loadBlogpost() {
-    // TODO: Get author form blogpost
-    handleBlogpostValues(
-      'author',
-      '0xFB010D3F1282629a4E9Ef51A355D6AD7B4e2979e'
-    );
-
-    const blockie = identicon('0xFB010D3F1282629a4E9Ef51A355D6AD7B4e2979e');
-
+    const blockie = identicon( post.author);
     // generate identicon
     handleBlogpostValues('identicon', blockie);
 
@@ -84,18 +82,12 @@ const PostPage = () => {
     today = dd + '.' + dd + '.' + yyyy;
     handleBlogpostValues('date', today);
 
-    // Trimm title if it has too many characters
-    if (blogpost.title.length > 70) {
-      handleBlogpostValues('title', blogpost.title.substring(0, 70) + '...');
-    } else {
-      handleBlogpostValues('title', blogpost.title);
+    if(post.authorAttrs.profilePicture){
+      handleBlogpostValues('profilePicture', post.authorAttrs.profilePicture);
     }
 
-    // Trimm text if it has too many characters
-    if (blogpost.text.length > 10000) {
-      handleBlogpostValues('text', blogpost.text.substring(0, 10000) + '...');
-    } else {
-      handleBlogpostValues('text', blogpost.text);
+    if(post.authorAttrs.name){
+      handleBlogpostValues('name', post.authorAttrs.name);
     }
   }
 
@@ -243,8 +235,8 @@ const PostPage = () => {
                 <div className="postRight">
                   <div className="">
                     {post.likes.length ? <a>{post.likes.length} </a> : '0 '}
-                    likes and {blogpost.comments.length} comments since{' '}
-                    {blogpost.date}
+                    likes and {post.comments.length} comments since{' '}
+                    {post.date}
                   </div>
                   <h4> {post.title}</h4>
                   <p className="textPreview">{post.text}</p>
