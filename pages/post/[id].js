@@ -73,13 +73,13 @@ const PostPage = () => {
     // generate identicon
     handleBlogpostValues('identicon', blockie);
 
-    // TODO: Get date from blogpost
-    var today = new Date();
+
+    var today = new Date(post.date);
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
 
-    today = dd + '.' + dd + '.' + yyyy;
+    today = dd + '.' + mm + '.' + yyyy;
     handleBlogpostValues('date', today);
 
     if(post.authorAttrs.profilePicture){
@@ -178,6 +178,7 @@ const PostPage = () => {
         comment={comment}
         setPost={setPost}
         postId={postId}
+        post={post}
       />
     ));
   };
@@ -235,8 +236,8 @@ const PostPage = () => {
                 <div className="postRight">
                   <div className="">
                     {post.likes.length ? <a>{post.likes.length} </a> : '0 '}
-                    likes and {post.comments.length} comments since{' '}
-                    {post.date}
+                    {post.likes.length >1 ? 'likes':'like'} and {post.comments.length} {post.comments.length > 1? ' comments': ' comment'} since{' '}
+                    {blogpost.date}
                   </div>
                   <h4> {post.title}</h4>
                   <p className="textPreview">{post.text}</p>

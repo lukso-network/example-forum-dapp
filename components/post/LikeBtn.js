@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { GlobalContext } from '../../contexts/GlobalContext';
 
 const LikeBtn = ({ setPost, postId, post }) => {
@@ -57,6 +57,14 @@ const LikeBtn = ({ setPost, postId, post }) => {
       }, 3000);
     }
   };
+
+  useEffect(() => {
+    if (post.likes.includes(account)) {
+      setLike(true);
+    } else {
+      setLike(false);
+    }
+  }, [])
 
   return (
     <div>
