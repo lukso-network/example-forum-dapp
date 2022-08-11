@@ -9,7 +9,7 @@ export default function Document() {
           href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.2.3/milligram.min.css"
           type="text/css"
         />
-        <meta charset="UTF-8"></meta>
+        <meta charSet="UTF-8"></meta>
       </Head>
       <body>
         <Main />
