@@ -34,7 +34,7 @@ function BrowsePost() {
   const showPlaceholder = () => {
     return (
       <div className="rightEmptyPage">
-        <Image src="/empty-up.png" width="150" height="150" />
+        <Image src="/forum-dapp/empty-up.png" width="150" height="150" />
         <div>No forum posts yet.</div>
       </div>
     );
