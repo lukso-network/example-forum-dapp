@@ -6,7 +6,6 @@ function Index() {
 
   useEffect(() => {
     router.push('/login');
-    console.log('index aufgerufen');
   }, []);
 
   return <></>;
