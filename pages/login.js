@@ -24,7 +24,7 @@ function Login() {
           // check if any number of accounts was returned
           // IF go to the dashboard
           if (accounts.length) {
-            router.push('/browse');
+            router.push('/browse');            
             setAccount(accounts[0]);
           } else {
             console.log('User denied access');
@@ -41,7 +41,7 @@ function Login() {
 
   useEffect(() => {
     if (account) {
-      router.push('./browse');
+      router.push('/browse');
     }
   }, [account]);
 
