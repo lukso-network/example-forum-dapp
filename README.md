@@ -19,7 +19,8 @@ Deployed to the LUKSO example dApp section at [examples.lukso.tech](https://exam
 
 ## Showcase
 
-WIP - add pictures
+![Showcase Post Creation](./img/showcase_1.png)
+![Showcase Browse Page](./img/showcase_2.png)
 
 ## Local Development
 
