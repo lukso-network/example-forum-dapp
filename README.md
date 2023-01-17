@@ -22,6 +22,10 @@ Deployed to the LUKSO example dApp section at [examples.lukso.tech](https://exam
 ![Showcase Post Creation](./img/showcase_1.png)
 ![Showcase Browse Page](./img/showcase_2.png)
 
+## Deployment and Hosting
+
+All example dApps on LUKSO are deployed using a custom CI/CD script to host several repositories to one domain with several subfolders. Please deploy merged changes with the GitHub Workflow in the [example-hosting](https://github.com/lukso-network/example-hosting) repository.
+
 ## Local Development
 
 ### Install
