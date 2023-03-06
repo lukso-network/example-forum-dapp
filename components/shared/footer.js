@@ -3,7 +3,7 @@ export default function Footer() {
     <footer className="Footer">
       <a
         className="Link"
-        href="https://wwww.github.com/lukso-network/example-forum-dapp"
+        href="https://www.github.com/lukso-network/example-forum-dapp"
         target="_blank"
         rel="noopener noreferrer"
       >
